@@ -1,0 +1,27 @@
+{
+  "name": "Coach Destiny Affiliate Hub",
+  "short_name": "Coach Destiny",
+  "description": "Earn daily income with affiliate marketing. ₦10,000 one-time fee. 50% commission. Daily payouts.",
+  "start_url": "/affiliate-hub/app.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance"],
+  "lang": "en",
+  "dir": "ltr"
+}
