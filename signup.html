@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Coach Destiny Affiliate Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        brand: { dark: '#0f172a', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', whatsapp: '#25D366', opay: '#00B875' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #ffffff; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cta-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.5); }
+        .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -5px rgba(245, 158, 11, 0.6); }
+        .opay-gradient { background: linear-gradient(135deg, #00B875 0%, #008F5B 100%); }
+        .opay-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -5px rgba(0, 184, 117, 0.4); }
+        .input-field { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
+        .input-field:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .step-active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+        .step-inactive { background: rgba(255, 255, 255, 0.1); }
+        .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.4; }
+        .floating-whatsapp { position: fixed; bottom: 30px; right: 30px; z-index: 1000; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+
+    <!-- Background -->
+    <div class="blob bg-blue-600 w-96 h-96 rounded-full top-0 left-0 mix-blend-multiply"></div>
+    <div class="blob bg-purple-600 w-96 h-96 rounded-full bottom-0 right-0 mix-blend-multiply"></div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/2349135204957" target="_blank" class="floating-whatsapp bg-[#25D366] w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl hover:bg-[#128C7E] transition-all">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Header -->
+    <header class="glass border-b border-white/10 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                    CD
+                </div>
+                <div>
+                    <span class="font-bold text-lg text-white block leading-none">Coach Destiny</span>
+                    <span class="text-blue-400 text-xs font-semibold tracking-wider">AFFILIATE HUB</span>
+                </div>
+            </a>
+            <div class="text-right">
+                <p class="text-gray-400 text-sm">Need help?</p>
+                <a href="https://wa.me/2349135204957" target="_blank" class="text-green-400 font-bold text-sm hover:underline">
+                    <i class="fab fa-whatsapp"></i> +234 913 520 4957
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center gap-4">
+                <div class="step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step1-indicator">1</div>
+                <div class="w-16 h-1 bg-white/20 rounded" id="line1"></div>
+                <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step2-indicator">2</div>
+                <div class="w-16 h-1 bg-white/20 rounded" id="line2"></div>
+                <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step3-indicator">3</div>
+            </div>
+        </div>
+        <div class="flex justify-center gap-16 text-sm text-gray-400 mb-8">
+            <span>Your Details</span>
+            <span>Payment</span>
+            <span>Confirmation</span>
+        </div>
+
+        <!-- STEP 1: Personal Details -->
+        <div id="step1" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-2">Create Your Account</h2>
+            <p class="text-gray-400 mb-6">Join 5,000+ affiliates earning daily</p>
+
+            <form id="signupForm" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">First Name *</label>
+                        <input type="text" name="firstname" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Last Name *</label>
+                        <input type="text" name="lastname" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="Doe">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
+                    <input type="email" name="email" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="john@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">WhatsApp Number *</label>
+                    <input type="tel" name="phone" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="08012345678">
+                    <p class="text-gray-500 text-xs mt-1">We'll send your login details here</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Location/State *</label>
+                    <select name="state" required class="input-field w-full px-4 py-3 rounded-lg">
+                        <option value="">Select your state</option>
+                        <option value="Lagos">Lagos</option>
+                        <option value="Abuja">Abuja</option>
+                        <option value="Port Harcourt">Port Harcourt</option>
+                        <option value="Kano">Kano</option>
+                        <option value="Ibadan">Ibadan</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">How did you hear about us?</label>
+                    <select name="referral" class="input-field w-full px-4 py-3 rounded-lg">
+                        <option value="">Select option</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Friend">Friend/Family</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="flex items-start gap-3 pt-2">
+                    <input type="checkbox" required id="agree" class="mt-1 w-5 h-5 rounded border-gray-600 text-blue-600 focus:ring-blue-500 bg-white/10">
+                    <label for="agree" class="text-sm text-gray-400">
+                        I agree to pay the ₦10,000 registration fee and understand this gives me lifetime access to the affiliate program *
+                    </label>
+                </div>
+
+                <button type="submit" class="cta-primary w-full py-4 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-2 transition-all">
+                    Continue to Payment <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <p class="text-center mt-6 text-gray-400 text-sm">
+                Already registered? <a href="https://wa.me/2349135204957" target="_blank" class="text-blue-400 hover:underline">Contact Support</a>
+            </p>
+        </div>
+
+        <!-- STEP 2: Payment - YOUR OPAY ACCOUNT -->
+        <div id="step2" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto hidden">
+            <h2 class="text-3xl font-bold text-white mb-2">Make Payment</h2>
+            <p class="text-gray-400 mb-6">Complete your ₦10,000 registration fee</p>
+
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-300">Registration Fee</span>
+                    <span class="text-white font-bold">₦10,000.00</span>
+                </div>
+                <div class="flex items-center justify-between text-lg font-bold">
+                    <span class="text-white">Total Amount</span>
+                    <span class="text-amber-400 text-2xl">₦10,000.00</span>
+                </div>
+            </div>
+
+            <!-- YOUR OPAY ACCOUNT DETAILS -->
+            <div class="space-y-4 mb-6">
+                <div class="opay-gradient rounded-xl p-6 border border-[#00B875]/30 shadow-lg shadow-[#00B875]/20">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                            <span class="text-[#00B875] font-bold text-xl">O</span>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-xl">OPay</h3>
+                            <p class="text-white/80 text-sm">Fast & Secure Payment</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-black/20 rounded-lg p-4 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80 text-sm">Bank Name:</span>
+                            <span class="text-white font-bold">OPay</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80 text-sm">Account Number:</span>
+                            <span class="text-white font-bold text-lg select-all tracking-wider">9135204957</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white/80 text-sm">Account Name:</span>
+                            <span class="text-white font-bold">Destiny Mendus Job</span>
+                        </div>
+                    </div>
+
+                    <button onclick="copyAccount()" class="mt-4 w-full py-3 bg-white text-[#00B875] rounded-lg font-bold hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                        <i class="fas fa-copy"></i> Copy Account Details
+                    </button>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                    <h3 class="font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-mobile-alt text-green-400"></i> How to Pay
+                    </h3>
+                    <div class="space-y-3 text-sm text-gray-300">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-blue-500/20 text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                            <p>Open your OPay app or any bank app</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-blue-500/20 text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                            <p>Transfer ₦10,000 to <strong class="text-white">9135204957</strong></p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="bg-blue-500/20 text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                            <p>Take a screenshot of the success page</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- USSD Option -->
+                <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                    <h3 class="font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-hashtag text-purple-400"></i> USSD Code (Any Bank)
+                    </h3>
+                    <div class="bg-black/30 rounded-lg p-3 font-mono text-sm text-center">
+                        <p class="text-gray-400 mb-2">Dial:</p>
+                        <p class="text-[#00B875] text-lg font-bold">*955*1*10000*9135204957#</p>
+                        <p class="text-gray-500 text-xs mt-2">OPay USSD - works with any phone</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+                <h4 class="font-bold text-white mb-2">After Payment:</h4>
+                <ol class="text-sm text-gray-300 space-y-2 list-decimal list-inside">
+                    <li>Take a screenshot of your payment receipt</li>
+                    <li>Click the button below to send proof</li>
+                    <li>Get instant access within 5 minutes!</li>
+                </ol>
+            </div>
+
+            <a id="whatsappPaymentLink" href="#" target="_blank" class="whatsapp-btn block w-full py-4 rounded-xl bg-[#25D366] text-white font-bold text-lg flex items-center justify-center gap-3 transition-all mb-4 shadow-lg shadow-green-500/30 hover:bg-[#128C7E]">
+                <i class="fab fa-whatsapp"></i> Send Payment Proof on WhatsApp
+            </a>
+
+            <button onclick="goBack()" class="w-full py-3 rounded-xl border border-white/20 text-white font-medium hover:bg-white/5 transition-all">
+                <i class="fas fa-arrow-left"></i> Go Back
+            </button>
+        </div>
+
+        <!-- STEP 3: Success -->
+        <div id="step3" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto hidden text-center">
+            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                <i class="fas fa-check text-4xl text-white"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2">Almost Done!</h2>
+            <p class="text-gray-400 mb-6">Your registration details have been sent to Coach Destiny</p>
+
+            <div class="bg-white/5 rounded-xl p-6 mb-6 text-left">
+                <h3 class="font-bold text-white mb-4">What happens next?</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-sm font-bold">1</div>
+                        <div>
+                            <p class="text-white font-medium">Send payment proof on WhatsApp</p>
+                            <p class="text-gray-400 text-sm">Screenshot your bank transfer receipt</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-sm font-bold">2</div>
+                        <div>
+                            <p class="text-white font-medium">Get verified (5-10 minutes)</p>
+                            <p class="text-gray-400 text-sm">Coach Destiny will confirm your payment</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-sm font-bold">3</div>
+                        <div>
+                            <p class="text-white font-medium">Start earning immediately!</p>
+                            <p class="text-gray-400 text-sm">Receive your affiliate link and training access</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="https://wa.me/2349135204957?text=I%20have%20completed%20my%20registration%20and%20sent%20payment%20proof" target="_blank" class="whatsapp-btn inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-[#25D366] text-white font-bold text-lg transition-all mb-4 shadow-lg shadow-green-500/30 hover:bg-[#128C7E]">
+                <i class="fab fa-whatsapp"></i> Open WhatsApp Now
+            </a>
+
+            <p class="text-gray-400 text-sm">Having issues? Call/WhatsApp: <a href="tel:+2349135204957" class="text-blue-400 font-bold">+234 913 520 4957</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto bg-black/40 border-t border-white/10 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gradient font-bold">"Your journey to financial freedom starts today."</p>
+            <p class="text-gray-500 text-sm mt-2">&copy; 2024 Coach Destiny Affiliate Hub</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form handling
+        let formData = {};
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const form = new FormData(e.target);
+            formData = {
+                firstname: form.get('firstname'),
+                lastname: form.get('lastname'),
+                email: form.get('email'),
+                phone: form.get('phone'),
+                state: form.get('state'),
+                referral: form.get('referral') || 'Not specified'
+            };
+
+            // Build WhatsApp message
+            const message = `*NEW AFFILIATE REGISTRATION*%0A%0A` +
+                `*Name:* ${formData.firstname} ${formData.lastname}%0A` +
+                `*Email:* ${formData.email}%0A` +
+                `*Phone:* ${formData.phone}%0A` +
+                `*State:* ${formData.state}%0A` +
+                `*Referral Source:* ${formData.referral}%0A%0A` +
+                `*I have made the ₦10,000 payment to your OPay (9135204957). Here is my proof:*`;
+
+            // Update WhatsApp link
+            document.getElementById('whatsappPaymentLink').href = `https://wa.me/2349135204957?text=${message}`;
+
+            // Go to step 2
+            goToStep(2);
+        });
+
+        function goToStep(step) {
+            // Hide all steps
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+
+            // Show target step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+
+            // Update indicators
+            document.getElementById('step1-indicator').className = step >= 1 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+            document.getElementById('step2-indicator').className = step >= 2 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+            document.getElementById('step3-indicator').className = step >= 3 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+
+            // Update lines
+            document.getElementById('line1').className = step >= 2 ? 'w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded' : 'w-16 h-1 bg-white/20 rounded';
+            document.getElementById('line2').className = step >= 3 ? 'w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded' : 'w-16 h-1 bg-white/20 rounded';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            goToStep(1);
+        }
+
+        function copyAccount() {
+            const details = `Bank: OPay\nAccount Number: 9135204957\nAccount Name: Destiny Mendus Job\nAmount: ₦10,000`;
+            navigator.clipboard.writeText(details).then(() => {
+                // Show success feedback
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('bg-green-100');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-100');
+                }, 2000);
+            });
+        }
+
+        // Auto-redirect to step 3 if they came from WhatsApp
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('paid') === 'true') {
+            goToStep(3);
+        }
+    </script>
+</body>
+</html>
