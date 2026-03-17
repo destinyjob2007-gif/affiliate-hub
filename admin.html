@@ -3,37 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Coach Destiny Affiliate Hub</title>
+    <title>Admin - Coach Destiny</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f172a; color: #ffffff; font-family: 'Outfit', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .status-pending { background: #f59e0b; color: #000; }
-        .status-approved { background: #10b981; color: #fff; }
-        .status-rejected { background: #ef4444; color: #fff; }
-        .payment-unpaid { background: #6b7280; }
-        .payment-paid { background: #3b82f6; }
-        .payment-verified { background: #10b981; }
-        .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
+        body { background: #0f172a; color: white; font-family: sans-serif; }
+        .pending { border-left: 4px solid #fbbf24; }
+        .confirmed { border-left: 4px solid #10b981; }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="p-4">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-2"><i class="fas fa-shield-alt mr-2"></i>Admin Panel</h1>
+        <p class="text-gray-400 mb-6">Confirm pending payments</p>
+        
+        <div class="flex gap-4 mb-6">
+            <button onclick="showTab('pending')" id="tab-pending" class="bg-yellow-600 px-4 py-2 rounded-lg font-bold">
+                Pending (<span id="count-pending">0</span>)
+            </button>
+            <button onclick="showTab('confirmed')" id="tab-confirmed" class="bg-gray-600 px-4 py-2 rounded-lg font-bold">
+                Confirmed (<span id="count-confirmed">0</span>)
+            </button>
+            <button onclick="loadPayments()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-bold ml-auto">
+                <i class="fas fa-refresh"></i> Refresh
+            </button>
+        </div>
+        
+        <div id="paymentsList" class="space-y-3">
+            <p class="text-gray-500 text-center py-8">Loading...</p>
+        </div>
+    </div>
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]">
-        <div class="glass rounded-2xl p-8 max-w-md w-full mx-4">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-lock text-2xl text-white"></i>
+    <script>
+        let currentTab = 'pending';
+
+        function showTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-pending').className = tab === 'pending' ? 'bg-yellow-600 px-4 py-2 rounded-lg font-bold' : 'bg-gray-600 px-4 py-2 rounded-lg font-bold';
+            document.getElementById('tab-confirmed').className = tab === 'confirmed' ? 'bg-green-600 px-4 py-2 rounded-lg font-bold' : 'bg-gray-600 px-4 py-2 rounded-lg font-bold';
+            loadPayments();
+        }
+
+        function loadPayments() {
+            const allPayments = JSON.parse(localStorage.getItem('allPayments') || '[]');
+            const list = document.getElementById('paymentsList');
+            
+            // Count
+            const pendingCount = allPayments.filter(p => p.status === 'pending').length;
+            const confirmedCount = allPayments.filter(p => p.status === 'confirmed').length;
+            document.getElementById('count-pending').textContent = pendingCount;
+            document.getElementById('count-confirmed').textContent = confirmedCount;
+            
+            // Filter
+            const filtered = allPayments.filter(p => p.status === currentTab);
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `<p class="text-gray-500 text-center py-8">No ${currentTab} payments</p>`;
+                return;
+            }
+            
+            // Sort: newest first
+            filtered.reverse();
+            
+            list.innerHTML = filtered.map((p, index) => `
+                <div class="bg-white/5 border border-white/10 rounded-lg p-4 ${p.status === 'pending' ? 'pending' : 'confirmed'}">
+                    <div class="flex flex-col md:flex-row justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-lg">${p.firstname} ${p.lastname}</span>
+                                ${p.status === 'pending' 
+                                    ? '<span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded font-bold">PENDING</span>'
+                                    : '<span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded font-bold">CONFIRMED</span>'
+                                }
+                            </div>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-phone mr-1"></i> ${p.phone}</p>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-envelope mr-1"></i> ${p.email}</p>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-1"></i> ${p.state}</p>
+                            <div class="mt-2 p-2 bg-black/30 rounded">
+                                <p class="text-xs text-gray-500">Transaction ID</p>
+                                <p class="text-yellow-400 font-mono font-bold">${p.transactionId}</p>
+                                <p class="text-xs text-gray-500 mt-1">Bank: ${p.bankUsed}</p>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Submitted: ${p.submittedAt}</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2 justify-center">
+                            ${p.status === 'pending' ? `
+                                <button onclick="confirmPayment('${p.id}')" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold">
+                                    <i class="fas fa-check mr-2"></i> CONFIRM
+                                </button>
+                                <button onclick="rejectPayment('${p.id}')" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg text-sm">
+                                    <i class="fas fa-times mr-2"></i> Reject
+                                </button>
+                            ` : `
+                                <div class="text-green-400 text-center">
+                                    <i class="fas fa-check-circle text-3xl mb-2"></i>
+                                    <p class="text-sm">Confirmed</p>
+                                    <p class="text-xs text-gray-500">${p.confirmedAt || ''}</p>
+                                </div>
+                            `}
+                        </div>
+                    </div>
                 </div>
-                <h1 class="text-2xl font-bold text-white">Admin Access</h1>
+            `).join('');
+        }
+
+        function confirmPayment(id) {
+            if (!confirm('Confirm this payment? User will get access immediately.')) return;
+            
+            let allPayments = JSON.parse(localStorage.getItem('allPayments') || '[]');
+            const index = allPayments.findIndex(p => p.id === id);
+            
+            if (index !== -1) {
+                allPayments[index].status = 'confirmed';
+                allPayments[index].confirmedAt = new Date().toLocaleString();
+                localStorage.setItem('allPayments', JSON.stringify(allPayments));
+                
+                // Also update user's record so they see it immediately
+                const currentUser = JSON.parse(localStorage.getItem('currentPayment') || '{}');
+                if (currentUser.id === id) {
+                    localStorage.setItem('currentPayment', JSON.stringify(allPayments[index]));
+                }
+                
+                alert('Payment confirmed! User will see success on their screen.');
+                loadPayments();
+            }
+        }
+
+        function rejectPayment(id) {
+            if (!confirm('Reject this payment?')) return;
+            
+            let allPayments = JSON.parse(localStorage.getItem('allPayments') || '[]');
+            const index = allPayments.findIndex(p => p.id === id);
+            
+            if (index !== -1) {
+                allPayments[index].status = 'rejected';
+                localStorage.setItem('allPayments', JSON.stringify(allPayments));
+                loadPayments();
+            }
+        }
+
+        // Auto refresh every 5 seconds
+        loadPayments();
+        setInterval(loadPayments, 5000);
+    </script>
+</body>
+</html>
                 <p class="text-gray-400 text-sm mt-2">Coach Destiny Affiliate Hub</p>
             </div>
 
