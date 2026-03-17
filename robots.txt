@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://destinyjob2007-gif.github.io/affiliate-hub/sitemap.xml
