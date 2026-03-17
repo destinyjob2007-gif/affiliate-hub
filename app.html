@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Coach Destiny App</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { 
+            background: #0f172a; 
+            color: #ffffff; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overscroll-behavior: none;
+        }
+        .app-container { max-width: 430px; margin: 0 auto; min-height: 100vh; }
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 100%; 
+            max-width: 430px;
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-item { 
+            flex: 1; 
+            text-align: center; 
+            padding: 12px 4px;
+            color: #64748b;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+        .nav-item.active { color: #f59e0b; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
+        .screen { display: none; padding-bottom: 80px; }
+        .screen.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+        .btn-primary { 
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: bold;
+            text-align: center;
+            display: block;
+        }
+        .whatsapp-btn { background: #25D366; color: white; border-radius: 12px; padding: 16px; font-weight: bold; text-align: center; display: block; }
+        .stat-card { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2)); border-radius: 16px; padding: 20px; }
+        .pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 8px; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .install-banner { background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 16px; border-radius: 12px; margin-bottom: 16px; }
+        .notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 12px 24px; border-radius: 24px; z-index: 1000; display: none; animation: slideDown 0.3s; }
+        @keyframes slideDown { from { transform: translate(-50%, -100%); } to { transform: translate(-50%, 0); } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Notification -->
+        <div id="notification" class="notification">Copied to clipboard!</div>
+
+        <!-- HOME SCREEN -->
+        <div id="home-screen" class="screen active">
+            <div class="p-4">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold">Coach Destiny</h1>
+                        <p class="text-gray-400 text-sm">Affiliate Hub</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <span class="font-bold text-sm">CD</span>
+                    </div>
+                </div>
+
+                <!-- Install Banner (shows if not installed) -->
+                <div id="install-banner" class="install-banner">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-sm">Install This App</p>
+                            <p class="text-xs opacity-80">Add to home screen for quick access</p>
+                        </div>
+                        <button onclick="installApp()" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-bold">Install</button>
+                    </div>
+                </div>
+
+                <!-- Live Stats -->
+                <div class="stat-card mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-300"><span class="pulse-dot"></span>Live Earnings</span>
+                        <span class="text-xs text-green-400">+5% today</span>
+                    </div>
+                    <div class="text-3xl font-bold mb-1">₦450,000</div>
+                    <div class="text-sm text-gray-400">Total paid to affiliates today</div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <a href="https://wa.me/2349135204957?text=Hello%20Coach%20Destiny,%20I%20want%20to%20register" class="whatsapp-btn flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp"></i> Register
+                    </a>
+                    <a href="index.html" class="btn-primary flex items-center justify-center gap-2">
+                        <i class="fas fa-globe"></i> Website
+                    </a>
+                </div>
+
+                <!-- Recent Activity -->
+                <h3 class="font-bold mb-3">Recent Activity</h3>
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-xs font-bold">CA</div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">Chioma A.</p>
+                            <p class="text-xs text-gray-400">Lagos • 2 mins ago</p>
+                        </div>
+                        <span class="text-green-400 font-bold">+₦5,000</span>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold">DJ</div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">David J.</p>
+                            <p class="text-xs text-gray-400">Abuja • 5 mins ago</p>
+                        </div>
+                        <span class="text-green-400 font-bold">+₦10,000</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-xs font-bold">BO</div>
+                        <div class="flex-1">
+                            <p class="font-semibold text-sm">Blessing O.</p>
+                            <p class="text-xs text-gray-400">Port Harcourt • 8 mins ago</p>
+                        </div>
+                        <span class="text-green-400 font-bold">+₦7,500</span>
+                    </div>
+                </div>
+
+                <!-- Why Join -->
+                <h3 class="font-bold mb-3">Why Join?</h3>
+                <div class="space-y-2">
+                    <div class="card flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                        <div>
+                            <p class="font-semibold text-sm">₦10,000 One-Time</p>
+                            <p class="text-xs text-gray-400">No yearly renewal fees</p>
+                        </div>
+                    </div>
+                    <div class="card flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                        <div>
+                            <p class="font-semibold text-sm">Daily Payouts</p>
+                            <p class="text-xs text-gray-400">Get paid same day you earn</p>
+                        </div>
+                    </div>
+                    <div class="card flex items-center gap-3">
+                        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                        <div>
+                            <p class="font-semibold text-sm">50% Commission</p>
+                            <p class="text-xs text-gray-400">Earn ₦2,500 - ₦10,000 per sale</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EARN SCREEN -->
+        <div id="earn-screen" class="screen">
+            <div class="p-4">
+                <h1 class="text-2xl font-bold mb-6">How to Earn</h1>
+                
+                <div class="space-y-4">
+                    <div class="card">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-xl font-bold">1</div>
+                            <div>
+                                <h3 class="font-bold">Register</h3>
+                                <p class="text-xs text-gray-400">Pay ₦10,000 one-time fee</p>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/2349135204957?text=Hello%20Coach%20Destiny,%20I%20want%20to%20register" class="btn-primary text-sm py-3">
+                            Start Registration →
+                        </a>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-xl font-bold">2</div>
+                            <div>
+                                <h3 class="font-bold">Get Your Link</h3>
+                                <p class="text-xs text-gray-400">Receive unique affiliate link</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300">Your personal tracking link will be sent to your WhatsApp within 1 hour of registration.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center text-xl font-bold">3</div>
+                            <div>
+                                <h3 class="font-bold">Share & Earn</h3>
+                                <p class="text-xs text-gray-400">Promote on WhatsApp, Facebook</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-300 mb-3">Share your link and earn 50% commission on every sale.</p>
+                        <div class="bg-green-500/10 rounded-lg p-3 text-center">
+                            <p class="text-green-400 font-bold">Daily Payouts!</p>
+                            <p class="text-xs text-gray-400">Get paid same day via bank transfer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 card">
+                    <h3 class="font-bold mb-3">Earning Calculator</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">1 sale/day</span>
+                            <span class="text-green-400 font-bold">₦5,000/day</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">3 sales/day</span>
+                            <span class="text-green-400 font-bold">₦15,000/day</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">10 sales/day</span>
+                            <span class="text-green-400 font-bold">₦50,000/day</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHARE SCREEN -->
+        <div id="share-screen" class="screen">
+            <div class="p-4">
+                <h1 class="text-2xl font-bold mb-6">Share & Invite</h1>
+                
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-2">Quick Share</h3>
+                    <p class="text-sm text-gray-400 mb-4">Share Coach Destiny with friends</p>
+                    
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="shareWhatsApp()" class="whatsapp-btn py-3 rounded-xl font-bold text-sm">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button onclick="copyLink()" class="bg-white/10 py-3 rounded-xl font-bold text-sm">
+                            <i class="fas fa-copy"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-3">Share Message</h3>
+                    <textarea id="share-text" class="w-full bg-black/30 rounded-lg p-3 text-sm text-gray-300 border border-white/10" rows="4" readonly>💰 Want to earn daily income online?
+
+Join Coach Destiny Affiliate Hub!
+✓ ₦10,000 one-time fee
+✓ 50% commission per sale
+✓ Daily payouts to your bank
+✓ WhatsApp mentorship
+
+Learn more: https://destinyjob2007-gif.github.io/affiliate-hub/
+
+WhatsApp: +234 913 520 4957</textarea>
+                    <button onclick="copyMessage()" class="w-full mt-3 bg-blue-500 py-3 rounded-xl font-bold text-sm">
+                        <i class="fas fa-copy"></i> Copy Message
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3 class="font-bold mb-3">Your Stats</h3>
+                    <div class="grid grid-cols-2 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-white">0</p>
+                            <p class="text-xs text-gray-400">Referrals</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-white">₦0</p>
+                            <p class="text-xs text-gray-400">Earnings</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 text-center mt-3">Register to get your affiliate link and track stats</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT SCREEN -->
+        <div id="contact-screen" class="screen">
+            <div class="p-4">
+                <h1 class="text-2xl font-bold mb-6">Contact</h1>
+                
+                <a href="https://wa.me/2349135204957" class="whatsapp-btn py-4 rounded-xl font-bold text-lg mb-4 flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-2xl"></i>
+                    <div class="text-left">
+                        <div>Chat on WhatsApp</div>
+                        <div class="text-sm font-normal opacity-80">+234 913 520 4957</div>
+                    </div>
+                </a>
+
+                <a href="tel:+2349135204957" class="bg-white/10 py-4 rounded-xl font-bold text-lg mb-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-phone text-xl"></i>
+                    <div class="text-left">
+                        <div>Call Now</div>
+                        <div class="text-sm font-normal text-gray-400">+234 913 520 4957</div>
+                    </div>
+                </a>
+
+                <div class="card">
+                    <h3 class="font-bold mb-3">Quick Links</h3>
+                    <a href="index.html" class="flex items-center justify-between py-3 border-b border-white/10">
+                        <span>Website</span>
+                        <i class="fas fa-external-link-alt text-gray-400"></i>
+                    </a>
+                    <a href="coach-destiny-review.html" class="flex items-center justify-between py-3 border-b border-white/10">
+                        <span>Read Review</span>
+                        <i class="fas fa-external-link-alt text-gray-400"></i>
+                    </a>
+                    <a href="coach-destiny-vs-expertnaire.html" class="flex items-center justify-between py-3">
+                        <span>Compare with Expertnaire</span>
+                        <i class="fas fa-external-link-alt text-gray-400"></i>
+                    </a>
+                </div>
+
+                <div class="card mt-4">
+                    <h3 class="font-bold mb-3">Business Hours</h3>
+                    <div class="flex items-center gap-2 text-green-400 mb-2">
+                        <span class="pulse-dot"></span>
+                        <span>Available Now</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Monday - Sunday: 24/7</p>
+                    <p class="text-sm text-gray-400">WhatsApp responses within 1 hour</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <div class="flex">
+                <button onclick="showScreen('home')" class="nav-item active" id="nav-home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </button>
+                <button onclick="showScreen('earn')" class="nav-item" id="nav-earn">
+                    <i class="fas fa-coins"></i>
+                    Earn
+                </button>
+                <button onclick="showScreen('share')" class="nav-item" id="nav-share">
+                    <i class="fas fa-share-alt"></i>
+                    Share
+                </button>
+                <button onclick="showScreen('contact')" class="nav-item" id="nav-contact">
+                    <i class="fas fa-comment"></i>
+                    Contact
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Screen Navigation
+        function showScreen(screen) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            // Show selected screen
+            document.getElementById(screen + '-screen').classList.add('active');
+            document.getElementById('nav-' + screen).classList.add('active');
+        }
+
+        // Share Functions
+        function shareWhatsApp() {
+            const text = encodeURIComponent(document.getElementById('share-text').value);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText('https://destinyjob2007-gif.github.io/affiliate-hub/');
+            showNotification('Link copied!');
+        }
+
+        function copyMessage() {
+            const text = document.getElementById('share-text');
+            text.select();
+            navigator.clipboard.writeText(text.value);
+            showNotification('Message copied!');
+        }
+
+        function showNotification(message) {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.style.display = 'block';
+            setTimeout(() => notif.style.display = 'none', 2000);
+        }
+
+        // Install App
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+            document.getElementById('install-banner').style.display = 'block';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        document.getElementById('install-banner').style.display = 'none';
+                    }
+                });
+            } else {
+                showNotification('Add to home screen manually');
+            }
+        }
+
+        // Hide install banner if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById('install-banner').style.display = 'none';
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(() => {
+                console.log('Service Worker registered');
+            });
+        }
+    </script>
+</body>
+</html>
