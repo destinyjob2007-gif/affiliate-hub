@@ -2,38 +2,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach Destiny Affiliate Hub</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Coach Destiny App</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-title" content="Coach Destiny">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0f172a">
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker failed', err));
+        }
+    </script>
+    
     <style>
-        * { -webkit-tap-highlight-color: transparent; }
-        body { 
-            background: #0f172a; 
-            color: #ffffff; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overscroll-behavior: none;
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
         }
-        .app-container { max-width: 430px; margin: 0 auto; min-height: 100vh; }
-        .bottom-nav { 
-            position: fixed; 
-            bottom: 0; 
-            left: 50%; 
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 350px;
+            margin-bottom: 30px;
+        }
+        
+        .stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 350px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .install-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
             transform: translateX(-50%);
-            width: 100%; 
-            max-width: 430px;
-            background: rgba(15, 23, 42, 0.95); 
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(59, 130, 246, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            display: none;
+            animation: bounce 2s infinite;
         }
-        .nav-item { 
-            flex: 1; 
-            text-align: center; 
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">CD</div>
+    <h1>Coach Destiny</h1>
+    <p>Earn daily income with affiliate marketing. Join thousands of affiliates making money every day.</p>
+    
+    <div class="stats">
+        <div class="stat">
+            <span class="stat-number">₦10k</span>
+            <div class="stat-label">One-time Fee</div>
+        </div>
+        <div class="stat">
+            <span class="stat-number">50%</span>
+            <div class="stat-label">Commission</div>
+        </div>
+        <div class="stat">
+            <span class="stat-number">Daily</span>
+            <div class="stat-label">Payouts</div>
+        </div>
+        <div class="stat">
+            <span class="stat-number">24/7</span>
+            <div class="stat-label">Support</div>
+        </div>
+    </div>
+    
+    <button class="btn" onclick="alert('Registration coming soon!')">Get Started Now</button>
+    
+    <div class="install-hint" id="installHint">📱 Tap menu → Add to Home Screen</div>
+    
+    <script>
+        // Show install hint if not in standalone mode
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            setTimeout(() => {
+                document.getElementById('installHint').style.display = 'block';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
             padding: 12px 4px;
             color: #64748b;
             font-size: 11px;
