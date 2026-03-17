@@ -14,9 +14,39 @@
     </style>
 </head>
 <body class="p-4">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold mb-2"><i class="fas fa-shield-alt mr-2"></i>Admin Panel</h1>
-        <p class="text-gray-400 mb-6">Confirm pending payments</p>
+
+    <!-- PASSWORD LOGIN SCREEN -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-md w-full text-center">
+            <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-lock text-3xl text-white"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Admin Login</h2>
+            <p class="text-gray-400 mb-6">Enter password to access admin panel</p>
+            
+            <input type="password" id="passwordInput" placeholder="Enter password" 
+                class="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white text-center text-lg mb-4"
+                onkeypress="if(event.key==='Enter')checkPassword()">
+            
+            <button onclick="checkPassword()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-lg font-bold text-lg">
+                <i class="fas fa-sign-in-alt mr-2"></i> Login
+            </button>
+            
+            <p id="errorMsg" class="text-red-400 mt-4 hidden">Wrong password!</p>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" class="hidden max-w-4xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold"><i class="fas fa-shield-alt mr-2"></i>Admin Panel</h1>
+                <p class="text-gray-400">Manage payments</p>
+            </div>
+            <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold text-sm">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </button>
+        </div>
         
         <div class="flex gap-4 mb-6">
             <button onclick="showTab('pending')" id="tab-pending" class="bg-yellow-600 px-4 py-2 rounded-lg font-bold">
@@ -34,6 +64,176 @@
             <p class="text-gray-500 text-center py-8">Loading...</p>
         </div>
     </div>
+
+    <script>
+        // CONFIG - YOUR CREDENTIALS
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/69b96d84b7ec241ddc784357';
+        const API_KEY = '$2a$10$pJae93fY05rZS3Vh35cIIu3ncGiXD16DvSVua1QSMoquLBuXWZrE2';
+        const ADMIN_PASSWORD = 'destiny2024';
+        
+        let currentTab = 'pending';
+        let allPayments = [];
+
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            showAdmin();
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                showAdmin();
+            } else {
+                document.getElementById('errorMsg').classList.remove('hidden');
+            }
+        }
+
+        function showAdmin() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadPayments();
+        }
+
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            location.reload();
+        }
+
+        function showTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-pending').className = tab === 'pending' ? 'bg-yellow-600 px-4 py-2 rounded-lg font-bold' : 'bg-gray-600 px-4 py-2 rounded-lg font-bold';
+            document.getElementById('tab-confirmed').className = tab === 'confirmed' ? 'bg-green-600 px-4 py-2 rounded-lg font-bold' : 'bg-gray-600 px-4 py-2 rounded-lg font-bold';
+            displayPayments();
+        }
+
+        async function loadPayments() {
+            try {
+                const response = await fetch(JSONBIN_URL + '/latest', {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                allPayments = data.record.payments || [];
+                displayPayments();
+            } catch (error) {
+                document.getElementById('paymentsList').innerHTML = 
+                    '<p class="text-center text-red-400 py-8">Error loading data. Check your API key.</p>';
+            }
+        }
+
+        function displayPayments() {
+            const list = document.getElementById('paymentsList');
+            
+            const pendingCount = allPayments.filter(p => p.status === 'pending').length;
+            const confirmedCount = allPayments.filter(p => p.status === 'confirmed').length;
+            document.getElementById('count-pending').textContent = pendingCount;
+            document.getElementById('count-confirmed').textContent = confirmedCount;
+            
+            const filtered = allPayments.filter(p => p.status === currentTab);
+            
+            if (filtered.length === 0) {
+                list.innerHTML = `<p class="text-gray-500 text-center py-8">No ${currentTab} payments</p>`;
+                return;
+            }
+            
+            filtered.reverse();
+            
+            list.innerHTML = filtered.map((p) => `
+                <div class="bg-white/5 border border-white/10 rounded-lg p-4 ${p.status === 'pending' ? 'pending' : 'confirmed'}">
+                    <div class="flex flex-col md:flex-row justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-lg">${p.firstname} ${p.lastname}</span>
+                                ${p.status === 'pending' 
+                                    ? '<span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded font-bold">PENDING</span>'
+                                    : '<span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded font-bold">CONFIRMED</span>'
+                                }
+                            </div>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-phone mr-1"></i> ${p.phone}</p>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-envelope mr-1"></i> ${p.email}</p>
+                            <p class="text-gray-400 text-sm"><i class="fas fa-map-marker-alt mr-1"></i> ${p.state}</p>
+                            <div class="mt-2 p-2 bg-black/30 rounded">
+                                <p class="text-xs text-gray-500">Transaction ID</p>
+                                <p class="text-yellow-400 font-mono font-bold">${p.transactionId}</p>
+                                <p class="text-xs text-gray-500 mt-1">Bank: ${p.bankUsed}</p>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Submitted: ${p.submittedAt}</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-2 justify-center">
+                            ${p.status === 'pending' ? `
+                                <button onclick="confirmPayment('${p.id}')" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold">
+                                    <i class="fas fa-check mr-2"></i> CONFIRM
+                                </button>
+                                <button onclick="rejectPayment('${p.id}')" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg text-sm">
+                                    <i class="fas fa-times mr-2"></i> Reject
+                                </button>
+                            ` : `
+                                <div class="text-green-400 text-center">
+                                    <i class="fas fa-check-circle text-3xl mb-2"></i>
+                                    <p class="text-sm">Confirmed</p>
+                                    <p class="text-xs text-gray-500">${p.confirmedAt || ''}</p>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function confirmPayment(id) {
+            if (!confirm('Confirm this payment?')) return;
+            
+            const payment = allPayments.find(p => p.id === id);
+            if (payment) {
+                payment.status = 'confirmed';
+                payment.confirmedAt = new Date().toLocaleString();
+                
+                try {
+                    await fetch(JSONBIN_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify({ payments: allPayments })
+                    });
+                    
+                    alert('Payment confirmed! User will see success.');
+                    displayPayments();
+                } catch (error) {
+                    alert('Error confirming. Try again.');
+                }
+            }
+        }
+
+        async function rejectPayment(id) {
+            if (!confirm('Reject this payment?')) return;
+            
+            const payment = allPayments.find(p => p.id === id);
+            if (payment) {
+                payment.status = 'rejected';
+                
+                try {
+                    await fetch(JSONBIN_URL, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': API_KEY
+                        },
+                        body: JSON.stringify({ payments: allPayments })
+                    });
+                    
+                    displayPayments();
+                } catch (error) {
+                    alert('Error rejecting. Try again.');
+                }
+            }
+        }
+
+        setInterval(loadPayments, 10000);
+    </script>
+</body>
+</html>
 
     <script>
         let currentTab = 'pending';
