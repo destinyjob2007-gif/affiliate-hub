@@ -3,293 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Coach Destiny Hub</title>
+    <title>Admin Panel - Coach Destiny Affiliate Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; }
-        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .success-pulse { animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7);} 50%{box-shadow:0 0 0 20px rgba(16,185,129,0);} }
-        .hidden { display: none !important; }
+        body { background-color: #0f172a; color: #ffffff; font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .status-pending { background: #f59e0b; color: #000; }
+        .status-approved { background: #10b981; color: #fff; }
+        .status-rejected { background: #ef4444; color: #fff; }
+        .payment-unpaid { background: #6b7280; }
+        .payment-paid { background: #3b82f6; }
+        .payment-verified { background: #10b981; }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
     </style>
 </head>
-<body class="min-h-screen p-4">
+<body class="min-h-screen">
 
     <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="max-w-md mx-auto mt-20 glass rounded-2xl p-8">
-        <div class="text-center mb-8">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-lock text-2xl"></i>
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a]">
+        <div class="glass rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-lock text-2xl text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Admin Access</h1>
+                <p class="text-gray-400 text-sm mt-2">Coach Destiny Affiliate Hub</p>
             </div>
-            <h1 class="text-2xl font-bold">Coach Destiny Admin</h1>
-            <p class="text-gray-400 text-sm">Authorized Personnel Only</p>
-        </div>
-        
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm text-gray-400 mb-2">Password</label>
-                <input type="password" id="adminPassword" class="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none" placeholder="Enter password">
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="adminPassword" required 
+                            class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:border-blue-500 focus:outline-none transition-colors"
+                            placeholder="Enter admin password">
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <p class="text-red-400 text-sm mt-2 hidden" id="errorMsg">
+                        <i class="fas fa-exclamation-circle"></i> Incorrect password
+                    </p>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all">
+                    <i class="fas fa-sign-in-alt"></i> Access Dashboard
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a href="index.html" class="text-gray-400 text-sm hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left"></i> Back to Website
+                </a>
             </div>
-            <button onclick="checkLogin()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity">
-                Access Dashboard
-            </button>
-            <p id="loginError" class="text-red-400 text-sm text-center hidden">Wrong password!</p>
         </div>
     </div>
 
-    <!-- ADMIN DASHBOARD -->
-    <div id="dashboard" class="hidden max-w-4xl mx-auto">
+    <!-- ADMIN DASHBOARD (Hidden until login) -->
+    <div id="adminDashboard" class="hidden">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-8 glass rounded-xl p-4">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center success-pulse">
-                    <i class="fas fa-shield-alt text-xl"></i>
+        <header class="glass border-b border-white/10 py-4 px-6">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl text-white">Admin Panel</h1>
+                        <p class="text-gray-400 text-sm">Coach Destiny Affiliate Hub</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-xl font-bold">Admin Dashboard</h1>
-                    <p class="text-green-400 text-sm">● System Active</p>
-                </div>
-            </div>
-            <button onclick="logout()" class="text-gray-400 hover:text-white">
-                <i class="fas fa-sign-out-alt text-xl"></i>
-            </button>
-        </div>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <div class="glass rounded-xl p-4 text-center">
-                <p class="text-gray-400 text-sm">Pending</p>
-                <p class="text-3xl font-bold text-amber-400" id="pendingCount">0</p>
-            </div>
-            <div class="glass rounded-xl p-4 text-center">
-                <p class="text-gray-400 text-sm">Confirmed Today</p>
-                <p class="text-3xl font-bold text-green-400" id="confirmedCount">0</p>
-            </div>
-            <div class="glass rounded-xl p-4 text-center">
-                <p class="text-gray-400 text-sm">Total Earnings</p>
-                <p class="text-3xl font-bold text-blue-400" id="totalEarnings">₦0</p>
-            </div>
-        </div>
-
-        <!-- Pending Payments List -->
-        <div class="glass rounded-xl p-6">
-            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                <i class="fas fa-clock text-amber-400"></i> Pending Verifications
-            </h2>
-            
-            <div id="pendingList" class="space-y-3">
-                <!-- Empty state -->
-                <div id="emptyState" class="text-center py-8 text-gray-500">
-                    <i class="fas fa-inbox text-4xl mb-2"></i>
-                    <p>No pending payments</p>
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-400 text-sm hidden md:block">
+                        <i class="fas fa-user-circle"></i> Owner Access
+                    </span>
+                    <button onclick="refreshData()" class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button onclick="logout()" class="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg hover:bg-red-600/30 transition-colors">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
                 </div>
             </div>
-        </div>
+        </header>
 
-        <!-- Confirmed List -->
-        <div class="glass rounded-xl p-6 mt-6">
-            <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                <i class="fas fa-check-circle text-green-400"></i> Recently Confirmed
-            </h2>
-            <div id="confirmedList" class="space-y-2 max-h-60 overflow-y-auto">
-                <!-- Confirmed items appear here -->
+        <!-- Stats Cards -->
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="glass rounded-xl p-4">
+                    <p class="text-gray-400 text-sm">Total Registrations</p>
+                    <p class="text-3xl font-bold text-white" id="totalCount">0</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-gray-400 text-sm">Pending Approval</p>
+                    <p class="text-3xl font-bold text-amber-400" id="pendingCount">0</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-gray-400 text-sm">Approved</p>
+                    <p class="text-3xl font-bold text-green-400" id="approvedCount">0</p>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <p class="text-gray-400 text-sm">Paid & Verified</p>
+                    <p class="text-3xl font-bold text-blue-400" id="paidCount">0</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Manual Confirm Section -->
-        <div class="glass rounded-xl p-6 mt-6 border-2 border-blue-500/30">
-            <h2 class="text-lg font-bold mb-4 text-blue-400">
-                <i class="fas fa-magic"></i> Quick Confirm (Manual)
-            </h2>
-            <div class="flex gap-3">
-                <input type="text" id="manualPhone" placeholder="Enter phone number (e.g. 08012345678)" 
-                    class="flex-1 bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-blue-500 focus:outline-none">
-                <button onclick="manualConfirm()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold transition-colors">
-                    Verify
+            <!-- Filters -->
+            <div class="glass rounded-xl p-4 mb-6 flex flex-wrap gap-3">
+                <button onclick="filterUsers('all')" class="px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">All</button>
+                <button onclick="filterUsers('pending')" class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-500/30 transition-colors">Pending</button>
+                <button onclick="filterUsers('approved')" class="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm font-medium hover:bg-green-500/30 transition-colors">Approved</button>
+                <button onclick="exportData()" class="px-4 py-2 bg-purple-600 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button onclick="clearAllData()" class="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm font-medium hover:bg-red-500/30 transition-colors ml-auto">
+                    <i class="fas fa-trash"></i> Clear All
                 </button>
             </div>
-            <p class="text-gray-500 text-sm mt-2">Use this if someone paid but didn't fill the form</p>
+
+            <!-- Registrations Table -->
+            <div class="glass rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-white/5 border-b border-white/10">
+                            <tr>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">ID</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Name</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Contact</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">State</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Referral</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Date</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Payment</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-300">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody" class="divide-y divide-white/10">
+                            <!-- Data loads here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="hidden text-center py-12 text-gray-400">
+                    <i class="fas fa-inbox text-4xl mb-3"></i>
+                    <p>No registrations found</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // PASSWORD - CHANGE THIS TO YOUR OWN!
-        const ADMIN_PASSWORD = "Destiny2024"; // ← CHANGE THIS!
+        // CONFIGURATION - CHANGE THIS PASSWORD
+        const ADMIN_PASSWORD = 'Destiny2024!'; // Change this to your preferred password
         
-        // Storage keys
-        const PENDING_KEY = 'cd_pending_payments';
-        const CONFIRMED_KEY = 'cd_confirmed_payments';
+        let allUsers = [];
+        let isAuthenticated = false;
 
-        // Check login
-        function checkLogin() {
+        // Check if already logged in (session only)
+        if (sessionStorage.getItem('adminAuth') === 'true') {
+            showDashboard();
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             const input = document.getElementById('adminPassword').value;
+            
             if (input === ADMIN_PASSWORD) {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                loadData();
+                sessionStorage.setItem('adminAuth', 'true');
+                showDashboard();
             } else {
-                document.getElementById('loginError').classList.remove('hidden');
+                const errorMsg = document.getElementById('errorMsg');
+                const loginScreen = document.getElementById('loginScreen');
+                
+                errorMsg.classList.remove('hidden');
+                loginScreen.classList.add('shake');
+                
+                setTimeout(() => {
+                    loginScreen.classList.remove('shake');
+                }, 500);
+                
+                document.getElementById('adminPassword').value = '';
             }
+        });
+
+        function togglePassword() {
+            const input = document.getElementById('adminPassword');
+            const icon = document.getElementById('eyeIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            isAuthenticated = true;
+            loadUsers();
         }
 
         function logout() {
-            document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('adminPassword').value = '';
+            sessionStorage.removeItem('adminAuth');
+            location.reload();
         }
 
-        // Load all data
-        function loadData() {
-            const pending = JSON.parse(localStorage.getItem(PENDING_KEY) || '[]');
-            const confirmed = JSON.parse(localStorage.getItem(CONFIRMED_KEY) || '[]');
+        function loadUsers() {
+            if (!isAuthenticated) return;
             
-            updateStats(pending, confirmed);
-            renderPending(pending);
-            renderConfirmed(confirmed);
+            allUsers = JSON.parse(localStorage.getItem('affiliateUsers')) || [];
+            displayUsers(allUsers);
+            updateStats();
         }
 
-        function updateStats(pending, confirmed) {
-            document.getElementById('pendingCount').textContent = pending.length;
-            document.getElementById('confirmedCount').textContent = confirmed.filter(c => {
-                const today = new Date().toDateString();
-                return new Date(c.time).toDateString() === today;
-            }).length;
-            document.getElementById('totalEarnings').textContent = '₦' + (confirmed.length * 10000).toLocaleString();
-        }
-
-        function renderPending(pending) {
-            const list = document.getElementById('pendingList');
-            const empty = document.getElementById('emptyState');
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            const emptyState = document.getElementById('emptyState');
             
-            if (pending.length === 0) {
-                empty.classList.remove('hidden');
-                list.innerHTML = '';
-                list.appendChild(empty);
+            tbody.innerHTML = '';
+            
+            if (users.length === 0) {
+                emptyState.classList.remove('hidden');
                 return;
             }
-            
-            empty.classList.add('hidden');
-            list.innerHTML = pending.map((p, index) => `
-                <div class="bg-white/5 rounded-lg p-4 flex items-center justify-between border-l-4 border-amber-500">
-                    <div>
-                        <p class="font-bold text-white">${p.name}</p>
-                        <p class="text-sm text-gray-400">${p.phone} • ${p.state}</p>
-                        <p class="text-xs text-gray-500 mt-1">Registered: ${new Date(p.time).toLocaleTimeString()}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="confirmPayment('${p.phone}')" 
-                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold transition-colors flex items-center gap-2">
-                            <i class="fas fa-check"></i> Confirm
-                        </button>
-                        <button onclick="rejectPayment('${p.phone}')"
-                            class="bg-red-600/50 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+            emptyState.classList.add('hidden');
 
-        function renderConfirmed(confirmed) {
-            const list = document.getElementById('confirmedList');
-            const recent = confirmed.slice(-10).reverse(); // Show last 10
-            
-            list.innerHTML = recent.map(c => `
-                <div class="bg-green-500/10 border border-green-500/20 rounded-lg p-3 flex items-center justify-between">
-                    <div>
-                        <p class="font-bold text-white text-sm">${c.name}</p>
-                        <p class="text-xs text-gray-400">${c.phone}</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-green-400 text-xs font-bold">✅ VERIFIED</p>
-                        <p class="text-gray-500 text-xs">${new Date(c.confirmedTime).toLocaleTimeString()}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
+            users.sort((a, b) => b.id - a.id);
 
-        // Confirm payment
-        function confirmPayment(phone) {
-            let pending = JSON.parse(localStorage.getItem(PENDING_KEY) || '[]');
-            let confirmed = JSON.parse(localStorage.getItem(CONFIRMED_KEY) || '[]');
-            
-            const person = pending.find(p => p.phone === phone);
-            if (!person) return;
-            
-            // Move to confirmed
-            person.confirmedTime = new Date().toISOString();
-            confirmed.push(person);
-            
-            // Remove from pending
-            pending = pending.filter(p => p.phone !== phone);
-            
-            // Save
-            localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
-            localStorage.setItem(CONFIRMED_KEY, JSON.stringify(confirmed));
-            
-            // Broadcast to user's page (this is the magic!)
-            localStorage.setItem('cd_verify_' + phone, JSON.stringify({
-                status: 'confirmed',
-                time: new Date().toISOString(),
-                name: person.name
-            }));
-            
-            loadData();
-            
-            // Visual feedback
-            alert(`✅ ${person.name} has been verified! Their screen will update automatically.`);
-        }
-
-        // Reject payment
-        function rejectPayment(phone) {
-            if (!confirm('Are you sure you want to reject this?')) return;
-            
-            let pending = JSON.parse(localStorage.getItem(PENDING_KEY) || '[]');
-            pending = pending.filter(p => p.phone !== phone);
-            localStorage.setItem(PENDING_KEY, JSON.stringify(pending));
-            
-            loadData();
-        }
-
-        // Manual confirm (for people who paid outside the form)
-        function manualConfirm() {
-            const phone = document.getElementById('manualPhone').value.trim();
-            if (!phone) return alert('Enter a phone number');
-            
-            let confirmed = JSON.parse(localStorage.getItem(CONFIRMED_KEY) || '[]');
-            
-            // Add manually
-            confirmed.push({
-                name: 'Manual Entry',
-                phone: phone,
-                state: 'Unknown',
-                time: new Date().toISOString(),
-                confirmedTime: new Date().toISOString(),
-                manual: true
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-white/5 transition-colors';
+                
+                const statusClass = user.status === 'approved' ? 'status-approved' : 
+                                   user.status === 'rejected' ? 'status-rejected' : 'status-pending';
+                
+                const paymentClass = user.paymentStatus === 'verified' ? 'payment-verified' : 
+                                    user.paymentStatus === 'paid' ? 'payment-paid' : 'payment-unpaid';
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-400">#${user.id.toString().slice(-6)}</td>
+                    <td class="px-6 py-4">
+                        <p class="font-medium text-white">${user.firstname} ${user.lastname}</p>
+                        <p class="text-xs text-gray-400">${user.email}</p>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-300">${user.phone}</td>
+                    <td class="px-6 py-4 text-sm text-gray-300">${user.state}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400">${user.referral}</td>
+                    <td class="px-6 py-4 text-sm text-gray-400">${user.date}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded text-xs font-medium ${paymentClass}">
+                            ${user.paymentStatus || 'unpaid'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded text-xs font-medium ${statusClass}">
+                            ${user.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-2 flex-wrap">
+                            ${user.status === 'pending' ? `
+                                <button onclick="approveUser(${user.id})" class="px-3 py-1 bg-green-600 rounded text-xs hover:bg-green-700 transition-colors" title="Approve">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button onclick="rejectUser(${user.id})" class="px-3 py-1 bg-red-600 rounded text-xs hover:bg-red-700 transition-colors" title="Reject">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="markPaid(${user.id})" class="px-3 py-1 bg-blue-600 rounded text-xs hover:bg-blue-700 transition-colors" title="Toggle Payment Status">
+                                <i class="fas fa-money-bill"></i>
+                            </button>
+                            <button onclick="copyDetails(${user.id})" class="px-3 py-1 bg-gray-600 rounded text-xs hover:bg-gray-700 transition-colors" title="Copy Details">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button onclick="deleteUser(${user.id})" class="px-3 py-1 bg-red-900/50 text-red-400 rounded text-xs hover:bg-red-900/70 transition-colors" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
             });
-            
-            localStorage.setItem(CONFIRMED_KEY, JSON.stringify(confirmed));
-            
-            // Broadcast verification
-            localStorage.setItem('cd_verify_' + phone, JSON.stringify({
-                status: 'confirmed',
-                time: new Date().toISOString(),
-                name: 'Valued Affiliate'
-            }));
-            
-            document.getElementById('manualPhone').value = '';
-            loadData();
-            alert(`✅ ${phone} has been manually verified!`);
         }
 
-        // Auto-refresh every 5 seconds to catch new registrations
-        setInterval(loadData, 5000);
+        function updateStats() {
+            document.getElementById('totalCount').textContent = allUsers.length;
+            document.getElementById('pendingCount').textContent = allUsers.filter(u => u.status === 'pending').length;
+            document.getElementById('approvedCount').textContent = allUsers.filter(u => u.status === 'approved').length;
+            document.getElementById('paidCount').textContent = allUsers.filter(u => u.paymentStatus === 'verified').length;
+        }
 
-        // Enter key on password
-        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkLogin();
-        });
+        function filterUsers(filter) {
+            if (filter === 'all') {
+                displayUsers(allUsers);
+            } else {
+                const filtered = allUsers.filter(u => u.status === filter);
+                displayUsers(filtered);
+            }
+        }
+
+        function approveUser(id) {
+            let users = JSON.parse(localStorage.getItem('affiliateUsers')) || [];
+            const user = users.find(u => u.id === id);
+            if (user) {
+                user.status = 'approved';
+                localStorage.setItem('affiliateUsers', JSON.stringify(users));
+                loadUsers();
+                
+                // WhatsApp notification
+                const message = `*Congratulations ${user.firstname}!*%0A%0AYour affiliate application has been *APPROVED*.%0A%0AWelcome to Coach Destiny Affiliate Hub!`;
+                window.open(`https://wa.me/${user.phone}?text=${message}`, '_blank');
+            }
+        }
+
+        function rejectUser(id) {
+            if (!confirm('Are you sure you want to reject this application?')) return;
+            
+            let users = JSON.parse(localStorage.getItem('affiliateUsers')) || [];
+            const user = users.find(u => u.id === id);
+            if (user) {
+                user.status = 'rejected';
+                localStorage.setItem('affiliateUsers', JSON.stringify(users));
+                loadUsers();
+            }
+        }
+
+        function markPaid(id) {
+            let users = JSON.parse(localStorage.getItem('affiliateUsers')) || [];
+            const user = users.find(u => u.id === id);
+            if (user) {
+                const statuses = ['unpaid', 'paid', 'verified'];
+                const currentIndex = statuses.indexOf(user.paymentStatus || 'unpaid');
+                user.paymentStatus = statuses[(currentIndex + 1) % statuses.length];
+                localStorage.setItem('affiliateUsers', JSON.stringify(users));
+                loadUsers();
+            }
+        }
+
+        function copyDetails(id) {
+            const user = allUsers.find(u => u.id === id);
+            if (user) {
+                const details = `*AFFILIATE DETAILS*
+Name: ${user.firstname} ${user.lastname}
+Email: ${user.email}
+Phone: ${user.phone}
+State: ${user.state}
+Status: ${user.status}
+Payment: ${user.paymentStatus || 'unpaid'}
+Date: ${user.date}`;
+                
+                navigator.clipboard.writeText(details).then(() => {
+                    alert('Details copied to clipboard!');
+                });
+            }
+        }
+
+        function deleteUser(id) {
+            if (!confirm('Delete this registration permanently?')) return;
+            
+            let users = JSON.parse(localStorage.getItem('affiliateUsers')) || [];
+            users = users.filter(u => u.id !== id);
+            localStorage.setItem('affiliateUsers', JSON.stringify(users));
+            loadUsers();
+        }
+
+        function clearAllData() {
+            if (!confirm('WARNING: This will delete ALL registrations. Continue?')) return;
+            localStorage.removeItem('affiliateUsers');
+            loadUsers();
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(allUsers, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `affiliates_backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+
+        function refreshData() {
+            loadUsers();
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            if (isAuthenticated) loadUsers();
+        }, 30000);
     </script>
 </body>
 </html>
