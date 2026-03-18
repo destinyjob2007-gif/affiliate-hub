@@ -12,9 +12,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: {
-                        brand: { dark: '#0f172a', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', whatsapp: '#25D366', opay: '#00B875' }
-                    }
+                    colors: { brand: { dark: '#0f172a', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', whatsapp: '#25D366', opay: '#00B875' } }
                 }
             }
         }
@@ -27,13 +25,380 @@
         .cta-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.5); }
         .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -5px rgba(245, 158, 11, 0.6); }
         .opay-gradient { background: linear-gradient(135deg, #00B875 0%, #008F5B 100%); }
-        .opay-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -5px rgba(0, 184, 117, 0.4); }
         .input-field { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
         .input-field:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
         .step-active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
         .step-inactive { background: rgba(255, 255, 255, 0.1); }
-        .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.4; }
-        .floating-whatsapp { position: fixed; bottom: 30px; right: 30px; z-index: 1000; animation: bounce 2s infinite; }
+        .pending { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="antialiased relative min-h-screen flex flex-col">
+
+    <!-- Background -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-blue-600 rounded-full filter blur-80 opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-600 rounded-full filter blur-80 opacity-40"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass border-b border-white/10 py-4">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">CD</div>
+                <div>
+                    <span class="font-bold text-lg text-white block">Coach Destiny</span>
+                    <span class="text-blue-400 text-xs">AFFILIATE HUB</span>
+                </div>
+            </a>
+            <div class="text-right">
+                <p class="text-gray-400 text-sm">Need help?</p>
+                <a href="https://wa.me/2349135204957" class="text-green-400 font-bold text-sm">+234 913 520 4957</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="max-w-4xl mx-auto px-4 py-8 w-full">
+        <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center gap-4">
+                <div class="step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step1-indicator">1</div>
+                <div class="w-16 h-1 bg-white/20 rounded" id="line1"></div>
+                <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step2-indicator">2</div>
+                <div class="w-16 h-1 bg-white/20 rounded" id="line2"></div>
+                <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" id="step3-indicator">3</div>
+            </div>
+        </div>
+        <div class="flex justify-center gap-16 text-sm text-gray-400 mb-8">
+            <span>Your Details</span>
+            <span>Payment</span>
+            <span>Status</span>
+        </div>
+
+        <!-- STEP 1 -->
+        <div id="step1" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-2">Create Your Account</h2>
+            <p class="text-gray-400 mb-6">Join 5,000+ affiliates earning daily</p>
+
+            <form id="signupForm" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">First Name *</label>
+                        <input type="text" name="firstname" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Last Name *</label>
+                        <input type="text" name="lastname" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="Doe">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Email Address *</label>
+                    <input type="email" name="email" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="john@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">WhatsApp Number *</label>
+                    <input type="tel" name="phone" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="08012345678">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Location/State *</label>
+                    <select name="state" required class="input-field w-full px-4 py-3 rounded-lg">
+                        <option value="">Select your state</option>
+                        <option value="Lagos">Lagos</option>
+                        <option value="Abuja">Abuja</option>
+                        <option value="Port Harcourt">Port Harcourt</option>
+                        <option value="Kano">Kano</option>
+                        <option value="Ibadan">Ibadan</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="flex items-start gap-3 pt-2">
+                    <input type="checkbox" required id="agree" class="mt-1 w-5 h-5 rounded bg-white/10 border-gray-600">
+                    <label for="agree" class="text-sm text-gray-400">
+                        I agree to pay the ₦10,000 registration fee. This is a one-time payment for lifetime access. *
+                    </label>
+                </div>
+
+                <button type="submit" class="cta-primary w-full py-4 rounded-xl text-white font-bold text-lg">
+                    Continue to Payment <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step2" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto hidden">
+            <h2 class="text-3xl font-bold text-white mb-2">Make Payment</h2>
+            <p class="text-gray-400 mb-6">Complete your ₦10,000 registration fee</p>
+
+            <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-6">
+                <div class="flex items-center justify-between text-lg font-bold">
+                    <span class="text-white">Total Amount</span>
+                    <span class="text-amber-400 text-2xl">₦10,000.00</span>
+                </div>
+            </div>
+
+            <!-- OPAY DETAILS -->
+            <div class="opay-gradient rounded-xl p-6 mb-6">
+                <h3 class="font-bold text-white text-xl mb-4">Pay to OPay</h3>
+                <div class="bg-black/20 rounded-lg p-4 space-y-2 text-sm">
+                    <div class="flex justify-between"><span>Account:</span> <span class="font-bold">9135204957</span></div>
+                    <div class="flex justify-between"><span>Name:</span> <span class="font-bold">Destiny Mendus Job</span></div>
+                    <div class="flex justify-between"><span>Bank:</span> <span class="font-bold">OPay</span></div>
+                </div>
+                <button onclick="copyAccount()" class="mt-4 w-full py-3 bg-white text-[#00B875] rounded-lg font-bold">
+                    <i class="fas fa-copy mr-2"></i> Copy Details
+                </button>
+            </div>
+
+            <!-- TRANSACTION INPUT -->
+            <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 mb-6">
+                <h3 class="font-bold text-white mb-4">Enter Transaction Details</h3>
+                <input type="text" id="transactionId" class="input-field w-full px-4 py-3 rounded-lg mb-4" placeholder="Transaction ID / Reference Number">
+                <select id="bankUsed" class="input-field w-full px-4 py-3 rounded-lg">
+                    <option value="">Select your bank</option>
+                    <option value="OPay">OPay</option>
+                    <option value="GTBank">GTBank</option>
+                    <option value="First Bank">First Bank</option>
+                    <option value="UBA">UBA</option>
+                    <option value="Zenith Bank">Zenith Bank</option>
+                    <option value="Access Bank">Access Bank</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <button onclick="submitForReview()" class="cta-primary w-full py-4 rounded-xl text-white font-bold text-lg mb-3">
+                <i class="fas fa-paper-plane mr-2"></i> Submit for Review
+            </button>
+
+            <a id="whatsappProofBtn" href="#" target="_blank" class="block w-full bg-[#25D366] hover:bg-[#128C7E] py-4 rounded-xl text-white font-bold text-lg text-center mb-3">
+                <i class="fab fa-whatsapp mr-2"></i> Send Receipt on WhatsApp
+            </a>
+
+            <button onclick="goBack()" class="w-full py-3 rounded-xl border border-white/20 text-white">
+                <i class="fas fa-arrow-left mr-2"></i> Go Back
+            </button>
+        </div>
+
+        <!-- STEP 3: PENDING -->
+        <div id="step3" class="glass-card rounded-2xl p-8 max-w-2xl mx-auto hidden text-center">
+            <div id="pendingView">
+                <div class="w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-6 pending">
+                    <i class="fas fa-clock text-5xl text-yellow-400"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2">Payment Pending</h2>
+                <p class="text-gray-400 mb-6">Your payment is being reviewed by admin</p>
+
+                <div class="bg-white/5 rounded-xl p-6 mb-6 text-left text-sm">
+                    <div class="flex justify-between mb-3 pb-3 border-b border-white/10">
+                        <span class="text-gray-400">Transaction ID</span>
+                        <span id="displayTransId" class="text-yellow-400 font-mono font-bold"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Status</span>
+                        <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full font-bold">UNDER REVIEW</span>
+                    </div>
+                </div>
+
+                <button onclick="checkStatusNow()" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-bold">
+                    <i class="fas fa-sync-alt mr-2"></i> Check Status
+                </button>
+            </div>
+
+            <div id="confirmedView" class="hidden">
+                <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-check-circle text-5xl text-green-400"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-green-400 mb-2">Payment Confirmed!</h2>
+                
+                <div class="bg-white/5 rounded-xl p-6 mb-6 text-left text-sm">
+                    <div class="flex justify-between mb-3 pb-3 border-b border-white/10">
+                        <span class="text-gray-400">Affiliate ID</span>
+                        <span id="affiliateId" class="text-blue-400 font-mono font-bold"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Referral Link</span>
+                        <span id="referralLink" class="text-green-400 font-mono text-xs break-all"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="copyReferralLink()" class="bg-blue-600 py-3 rounded-xl font-bold">Copy Link</button>
+                    <a href="index.html" class="bg-green-600 py-3 rounded-xl font-bold flex items-center justify-center">Go Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // YOUR JSONBIN CREDENTIALS
+        const JSONBIN_URL = 'https://api.jsonbin.io/v3/b/69b96d84b7ec241ddc784357';
+        const API_KEY = '$2a$10$pJae93fY05rZS3Vh35cIIu3ncGiXD16DvSVua1QSMoquLBuXWZrE2';
+        
+        let currentUser = null;
+        let checkInterval = null;
+
+        // CHECK CLOUD ON LOAD (Fixes refresh issue)
+        window.onload = async function() {
+            const savedId = localStorage.getItem('currentPaymentId');
+            if (savedId) {
+                const payment = await getFromCloud(savedId);
+                if (payment) {
+                    currentUser = payment;
+                    if (payment.status === 'pending') showPending(payment);
+                    else if (payment.status === 'confirmed') showConfirmed(payment);
+                    return;
+                }
+            }
+        };
+
+        async function getFromCloud(id) {
+            try {
+                const response = await fetch(JSONBIN_URL + '/latest', {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                const payments = data.record.payments || [];
+                return payments.find(p => p.id === id);
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
+
+        // STEP 1 SUBMIT
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            
+            currentUser = {
+                id: 'CD' + Date.now(),
+                firstname: form.get('firstname'),
+                lastname: form.get('lastname'),
+                email: form.get('email'),
+                phone: form.get('phone'),
+                state: form.get('state'),
+                status: 'filling'
+            };
+            
+            const msg = `*NEW REGISTRATION*%0A%0A*Name:* ${currentUser.firstname} ${currentUser.lastname}%0A*Email:* ${currentUser.email}%0A*Phone:* ${currentUser.phone}%0A*State:* ${currentUser.state}%0A%0A*I have paid ₦10,000 to OPay 9135204957. Here is my proof:*`;
+            
+            document.getElementById('whatsappProofBtn').href = `https://wa.me/2349135204957?text=${msg}`;
+            showStep(2);
+        });
+
+        // STEP 2 SUBMIT
+        async function submitForReview() {
+            const transId = document.getElementById('transactionId').value.trim();
+            const bankUsed = document.getElementById('bankUsed').value;
+            
+            if (!transId || !bankUsed) {
+                alert('Enter Transaction ID and Bank');
+                return;
+            }
+            
+            currentUser.transactionId = transId;
+            currentUser.bankUsed = bankUsed;
+            currentUser.status = 'pending';
+            currentUser.submittedAt = new Date().toLocaleString();
+            
+            try {
+                const response = await fetch(JSONBIN_URL + '/latest', {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await response.json();
+                const payments = data.record.payments || [];
+                
+                // Prevent duplicate
+                const existing = payments.find(p => p.email === currentUser.email && p.status === 'pending');
+                if (existing) {
+                    alert('You already have a pending payment!');
+                    currentUser = existing;
+                    localStorage.setItem('currentPaymentId', existing.id);
+                    showPending(existing);
+                    return;
+                }
+                
+                payments.push(currentUser);
+                
+                await fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify({ payments: payments })
+                });
+                
+                localStorage.setItem('currentPaymentId', currentUser.id);
+                showPending(currentUser);
+                
+            } catch (error) {
+                alert('Error. Check internet and try again.');
+            }
+        }
+
+        function showPending(data) {
+            showStep(3);
+            document.getElementById('pendingView').classList.remove('hidden');
+            document.getElementById('confirmedView').classList.add('hidden');
+            document.getElementById('displayTransId').textContent = data.transactionId;
+            
+            if (checkInterval) clearInterval(checkInterval);
+            checkInterval = setInterval(checkStatusNow, 10000);
+        }
+
+        function showConfirmed(data) {
+            showStep(3);
+            document.getElementById('pendingView').classList.add('hidden');
+            document.getElementById('confirmedView').classList.remove('hidden');
+            document.getElementById('affiliateId').textContent = data.id;
+            document.getElementById('referralLink').textContent = 'https://coachdestiny.com/ref/' + data.id;
+            
+            if (checkInterval) clearInterval(checkInterval);
+        }
+
+        async function checkStatusNow() {
+            if (!currentUser) return;
+            const updated = await getFromCloud(currentUser.id);
+            
+            if (updated && updated.status === 'confirmed') {
+                showConfirmed(updated);
+            } else if (updated && updated.status === 'rejected') {
+                alert('Payment rejected. Contact support.');
+                clearInterval(checkInterval);
+            }
+        }
+
+        function showStep(step) {
+            ['step1', 'step2', 'step3'].forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById(`step${step}`).classList.remove('hidden');
+            
+            document.getElementById('step1-indicator').className = step >= 1 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+            document.getElementById('step2-indicator').className = step >= 2 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+            document.getElementById('step3-indicator').className = step >= 3 ? 'step-active w-10 h-10 rounded-full flex items-center justify-center text-white font-bold' : 'step-inactive w-10 h-10 rounded-full flex items-center justify-center text-white font-bold';
+            
+            document.getElementById('line1').className = step >= 2 ? 'w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded' : 'w-16 h-1 bg-white/20 rounded';
+            document.getElementById('line2').className = step >= 3 ? 'w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded' : 'w-16 h-1 bg-white/20 rounded';
+        }
+
+        function goBack() { showStep(1); }
+        
+        function copyAccount() {
+            navigator.clipboard.writeText('Bank: OPay\nAccount: 9135204957\nName: Destiny Mendus Job\nAmount: ₦10,000');
+            alert('Copied!');
+        }
+        
+        function copyReferralLink() {
+            navigator.clipboard.writeText(document.getElementById('referralLink').textContent);
+            alert('Link copied!');
+        }
+    </script>
+</body>
+</html>
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .pending { animation: pulse 2s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
