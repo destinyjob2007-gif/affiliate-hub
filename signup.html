@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sign Up - Coach Destiny Affiliate Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script>
@@ -12,28 +13,499 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: { brand: { dark: '#0f172a', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', whatsapp: '#25D366', opay: '#00B875' } }
+                    colors: { 
+                        brand: { dark: '#0f172a', primary: '#3b82f6', accent: '#8b5cf6', success: '#10b981', whatsapp: '#25D366' },
+                        flutter: { primary: '#F5A623', dark: '#0A0E27' }
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0f172a; color: #ffffff; overflow-x: hidden; }
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0f172a; color: #ffffff; overflow-x: hidden; font-family: 'Outfit', sans-serif; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 0.05); }
         .text-gradient { background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .cta-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.5); }
-        .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -5px rgba(245, 158, 11, 0.6); }
-        .opay-gradient { background: linear-gradient(135deg, #00B875 0%, #008F5B 100%); }
+        .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -5px rgba(245, 158, 11, 0.6); }
+        .flutter-btn { background: linear-gradient(135deg, #F5A623 0%, #D4891C 100%); box-shadow: 0 10px 30px -5px rgba(245, 166, 35, 0.4); }
+        .flutter-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -5px rgba(245, 166, 35, 0.5); }
         .input-field { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.3s; }
-        .input-field:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-        .step-active { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+        .input-field:focus { border-color: #F5A623; outline: none; box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.1); }
+        .step-active { background: linear-gradient(135deg, #F5A623, #D4891C); }
         .step-inactive { background: rgba(255, 255, 255, 0.1); }
-        .pending { animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
         .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .glass-card { margin: 0 0.5rem; padding: 1.5rem !important; }
+            .step-indicator { width: 2rem !important; height: 2rem !important; font-size: 0.875rem; }
+            .step-line { width: 2rem !important; }
+        }
+        
+        /* Loading spinner */
+        .spinner { border: 3px solid rgba(255,255,255,0.1); border-left-color: #F5A623; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Success checkmark */
+        .checkmark { width: 60px; height: 60px; border-radius: 50%; display: block; stroke-width: 2; stroke: #fff; stroke-miterlimit: 10; box-shadow: inset 0px 0px 0px #10b981; animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; }
+        .checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: #10b981; fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+        .checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+        @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 30px #10b981; } }
     </style>
 </head>
+<body class="antialiased relative min-h-screen flex flex-col">
+
+    <!-- Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+        <div class="absolute -top-20 -left-20 w-72 h-72 bg-blue-600 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+        <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-purple-600 rounded-full filter blur-3xl opacity-30 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-500 rounded-full filter blur-3xl opacity-20"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass border-b border-white/10 py-3 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">CD</div>
+                <div>
+                    <span class="font-bold text-white text-sm block leading-tight">Coach Destiny</span>
+                    <span class="text-blue-400 text-[10px] tracking-wider">AFFILIATE HUB</span>
+                </div>
+            </a>
+            <a href="https://wa.me/2349135204957" target="_blank" class="flex items-center gap-1 bg-green-500/20 px-3 py-1.5 rounded-full border border-green-500/30">
+                <i class="fab fa-whatsapp text-green-400 text-sm"></i>
+                <span class="text-green-400 text-xs font-bold">Help</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="max-w-md mx-auto px-4 py-6 w-full">
+        <div class="flex items-center justify-center mb-6">
+            <div    </header>
+
+    <!-- Progress Steps -->
+    <div class="max-w-md mx-auto px-4 py-6 w-full">
+        <div class="flex items-center justify-center mb-6">
+            <div class="flex items-center gap-2">
+                <div class="step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step1-indicator">1</div>
+                <div class="step-line w-8 h-1 bg-white/20 rounded" id="line1"></div>
+                <div class="step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step2-indicator">2</div>
+                <div class="step-line w-8 h-1 bg-white/20 rounded" id="line2"></div>
+                <div class="step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step3-indicator">3</div>
+            </div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-400 px-2 mb-6">
+            <span>Your Info</span>
+            <span>Payment</span>
+            <span>Success</span>
+        </div>
+
+        <!-- STEP 1: Personal Details -->
+        <div id="step1" class="glass-card rounded-2xl p-6 fade-in">
+            <h2 class="text-2xl font-bold text-white mb-1">Create Account</h2>
+            <p class="text-gray-400 text-sm mb-5">Join 5,000+ affiliates earning daily</p>
+
+            <form id="signupForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">First Name *</label>
+                        <input type="text" name="firstname" required class="input-field w-full px-3 py-2.5 rounded-lg text-sm" placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Last Name *</label>
+                        <input type="text" name="lastname" required class="input-field w-full px-3 py-2.5 rounded-lg text-sm" placeholder="Doe">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Email Address *</label>
+                    <input type="email" name="email" required class="input-field w-full px-3 py-2.5 rounded-lg text-sm" placeholder="john@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">WhatsApp Number *</label>
+                    <input type="tel" name="phone" required class="input-field w-full px-3 py-2.5 rounded-lg text-sm" placeholder="08012345678">
+                    <p class="text-gray-500 text-[10px] mt-1">For payment confirmation</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">State *</label>
+                    <select name="state" required class="input-field w-full px-3 py-2.5 rounded-lg text-sm">
+                        <option value="">Select state</option>
+                        <option value="Lagos">Lagos</option>
+                        <option value="Abuja">Abuja</option>
+                        <option value="Port Harcourt">Port Harcourt</option>
+                        <option value="Kano">Kano</option>
+                        <option value="Ibadan">Ibadan</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="flex items-start gap-2 pt-1">
+                    <input type="checkbox" required id="agree" class="mt-0.5 w-4 h-4 rounded border-gray-600 text-orange-500 focus:ring-orange-500 bg-white/10">
+                    <label for="agree" class="text-xs text-gray-400 leading-relaxed">
+                        I agree to pay ₦10,000 registration fee for lifetime affiliate access *
+                    </label>
+                </div>
+
+                <button type="submit" class="cta-primary w-full py-3.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all mt-2">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <p class="text-center mt-4 text-gray-400 text-xs">
+                Need help? <a href="https://wa.me/2349135204957" target="_blank" class="text-green-400 font-medium">Chat on WhatsApp</a>
+            </p>
+        </div>
+
+        <!-- STEP 2: Payment -->
+        <div id="step2" class="glass-card rounded-2xl p-6 hidden fade-in">
+            <h2 class="text-2xl font-bold text-white mb-1">Complete Payment</h2>
+            <p class="text-gray-400 text-sm mb-5">Secure payment powered by Flutterwave</p>
+
+            <div class="bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 rounded-xl p-4 mb-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-300 text-sm">Registration Fee</span>
+                    <span class="text-white font-bold">₦10,000.00</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-white font-medium">Total</span>
+                    <span class="text-orange-400 text-2xl font-bold">₦10,000</span>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="space-y-3 mb-5">
+                <div class="bg-white/5 rounded-lg p-3 border border-white/10 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
+                        <i class="fas fa-credit-card text-orange-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm font-medium">Card Payment</p>
+                        <p class="text-gray-400 text-xs">Visa, Mastercard, Verve</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white/5 rounded-lg p-3 border border-white/10 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <i class="fas fa-university text-green-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm font-medium">Bank Transfer</p>
+                        <p class="text-gray-400 text-xs">USSD, Bank Account</p>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 rounded-lg p-3 border border-white/10 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-blue-400"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm font-medium">Mobile Money</p>
+                        <p class="text-gray-400 text-xs">OPay, Paga, etc.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="makePayment()" class="flutter-btn w-full py-4 rounded-xl text-white font-bold flex items-center justify-center gap-2 transition-all mb-3">
+                <i class="fas fa-lock"></i> Pay Now Securely
+            </button>
+
+            <div class="flex items-center justify-center gap-2 text-xs text-gray-400 mb-3">
+                <i class="fas fa-shield-alt text-green-400"></i>
+                <span>Secured by Flutterwave</span>
+            </div>
+
+            <button onclick="goBack()" class="w-full py-3 rounded-xl border border-white/20 text-white text-sm font-medium hover:bg-white/5 transition-all">
+                <i class="fas fa-arrow-left mr-1"></i> Back
+            </button>
+        </div>
+
+        <!-- STEP 3: Processing -->
+        <div id="step3-processing" class="glass-card rounded-2xl p-8 hidden text-center fade-in">
+            <div class="spinner mx-auto mb-4"></div>
+            <h3 class="text-xl font-bold text-white mb-2">Processing Payment...</h3>
+            <p class="text-gray-400 text-sm">Please wait while we confirm your transaction</p>
+        </div>
+
+        <!-- STEP 3: Success & WhatsApp Redirect -->
+        <div id="step3-success" class="glass-card rounded-2xl p-6 hidden text-center fade-in">
+            <div class="checkmark mx-auto mb-4">
+                <svg class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-green-400 mb-2">Payment Successful!</h2>
+            <p class="text-gray-400 text-sm mb-5">Redirecting you to WhatsApp...</p>
+
+            <div class="bg-white/5 rounded-xl p-4 mb-5 text-left">
+                <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/10">
+                    <span class="text-gray-400 text-sm">Amount Paid</span>
+                    <span class="text-white font-bold">₦10,000</span>
+                </div>
+                <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/10">
+                    <span class="text-gray-400 text-sm">Transaction Ref</span>
+                    <span id="txRef" class="text-orange-400 font-mono text-xs"></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400 text-sm">Status</span>
+                    <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs font-bold">COMPLETED</span>
+                </div>
+            </div>
+
+            <a id="whatsappLink" href="#" target="_blank" class="block w-full bg-[#25D366] hover:bg-[#128C7E] py-3.5 rounded-xl text-white font-bold flex items-center justify-center gap-2 transition-all mb-3">
+                <i class="fab fa-whatsapp text-xl"></i> Continue to WhatsApp
+            </a>
+
+            <p class="text-xs text-gray-500">
+                Didn't redirect? <button onclick="redirectToWhatsApp()" class="text-green-400 underline">Click here</button>
+            </p>
+        </div>
+
+        <!-- STEP 3: Failed -->
+        <div id="step3-failed" class="glass-card rounded-2xl p-6 hidden text-center fade-in">
+            <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-times text-3xl text-red-400"></i>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-2">Payment Failed</h2>
+            <p class="text-gray-400 text-sm mb-5" id="failReason">Something went wrong</p>
+            
+            <button onclick="makePayment()" class="flutter-btn w-full py-3 rounded-xl text-white font-bold mb-3">
+                Try Again
+            </button>
+            <button onclick="goBack()" class="w-full py-3 rounded-xl border border-white/20 text-white text-sm">
+                Go Back
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto bg-black/40 border-t border-white/10 py-4">
+        <div class="max-w-md mx-auto px-4 text-center">
+            <p class="text-gradient text-sm font-bold">"Your journey starts today"</p>
+            <p class="text-gray-500 text-xs mt-1">&copy; 2024 Coach Destiny</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const FLW_PUBLIC_KEY = 'FLWPUBK_TEST-a84a53a18e98d29d724772ddb6c2d059-X';
+        const AMOUNT = 10000;
+        const CURRENCY = 'NGN';
+        const WHATSAPP_NUMBER = '2349135204957';
+        
+        let userData = {};
+        let transactionRef = '';
+
+        // Step 1: Form Submit
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = new FormData(e.target);
+            userData = {
+                firstname: form.get('firstname'),
+                lastname: form.get('lastname'),
+                email: form.get('email'),
+                phone: form.get('phone'),
+                state: form.get('state'),
+                id: 'CD' + Date.now()
+            };
+            
+            goToStep(2);
+        });
+
+        // Step 2: Make Flutterwave Payment
+        function makePayment() {
+            transactionRef = 'CD_TX_' + Date.now();
+            
+            FlutterwaveCheckout({
+                public_key: FLW_PUBLIC_KEY,
+                tx_ref: transactionRef,
+                amount: AMOUNT,
+                currency: CURRENCY,
+                payment_options: "card,ussd,banktransfer,mpesa,barter,payattitude",
+                redirect_url: "", // We handle redirect manually
+                meta: {
+                    consumer_id: userData.id,
+                    consumer_mac: "kjs9kjs9sk9sks"
+                },
+                customer: {
+                    email: userData.email,
+                    phone_number: userData.phone,
+                    name: userData.firstname + ' ' + userData.lastname,
+                },
+                customizations: {
+                    title: "Coach Destiny Affiliate",
+                    description: "Registration Fee - Lifetime Access",
+                    logo: "https://coachdestiny.com/logo.png", // Replace with your logo URL
+                },
+                callback: function(data) {
+                    console.log("Payment callback:", data);
+                    handlePaymentResponse(data);
+                },
+                onclose: function() {
+                    // User closed the modal
+                    console.log("Payment modal closed");
+                }
+            });
+        }
+
+        // Handle Payment Response
+        function handlePaymentResponse(response) {
+            goToStep('processing');
+            
+            // Simulate processing delay for UX
+            setTimeout(() => {
+                if (response.status === "successful" || response.status === "completed") {
+                    // Payment successful
+                    savePaymentData(response);
+                    showSuccess(response);
+                } else {
+                    // Payment failed
+                    showFailed(response.status);
+                }
+            }, 1500);
+        }
+
+        // Save to localStorage (for your records)
+        function savePaymentData(response) {
+            const paymentRecord = {
+                ...userData,
+                transactionRef: transactionRef,
+                flutterwaveRef: response.transaction_id || response.flw_ref,
+                amount: AMOUNT,
+                status: 'paid',
+                date: new Date().toISOString(),
+                paymentMethod: response.payment_type || 'card'
+            };
+            
+            let payments = JSON.parse(localStorage.getItem('cd_payments') || '[]');
+            payments.push(paymentRecord);
+            localStorage.setItem('cd_payments', JSON.stringify(payments));
+        }
+
+        // Show Success & Auto-redirect to WhatsApp
+        function showSuccess(response) {
+            goToStep('success');
+            
+            // Display transaction ref
+            document.getElementById('txRef').textContent = transactionRef;
+            
+            // Build WhatsApp message
+            const message = `*NEW AFFILIATE REGISTRATION - PAID*%0A%0A` +
+                `*Name:* ${userData.firstname} ${userData.lastname}%0A` +
+                `*Email:* ${userData.email}%0A` +
+                `*Phone:* ${userData.phone}%0A` +
+                `*State:* ${userData.state}%0A` +
+                `*Amount Paid:* ₦${AMOUNT.toLocaleString()}%0A` +
+                `*Transaction Ref:* ${transactionRef}%0A` +
+                `*Flutterwave Ref:* ${response.transaction_id || 'N/A'}%0A%0A` +
+                `*Payment Status:* ✅ SUCCESSFUL%0A` +
+                `*Date:* ${new Date().toLocaleString()}%0A%0A` +
+                `Please activate my affiliate account.`;
+            
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+            document.getElementById('whatsappLink').href = whatsappUrl;
+            
+            // Auto-redirect after 3 seconds
+            setTimeout(() => {
+                redirectToWhatsApp();
+            }, 3000);
+        }
+
+        // Redirect to WhatsApp
+        function redirectToWhatsApp() {
+            const message = `*NEW AFFILIATE REGISTRATION - PAID*%0A%0A` +
+                `*Name:* ${userData.firstname} ${userData.lastname}%0A` +
+                `*Email:* ${userData.email}%0A` +
+                `*Phone:* ${userData.phone}%0A` +
+                `*State:* ${userData.state}%0A` +
+                `*Amount Paid:* ₦${AMOUNT.toLocaleString()}%0A` +
+                `*Transaction Ref:* ${transactionRef}%0A%0A` +
+                `Please activate my affiliate account.`;
+            
+            window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+        }
+
+        // Show Failed
+        function showFailed(reason) {
+            goToStep('failed');
+            document.getElementById('failReason').textContent = 
+                reason === 'cancelled' ? 'You cancelled the payment' : 
+                reason === 'failed' ? 'Payment could not be processed' : 
+                'Something went wrong. Please try again.';
+        }
+
+        // Navigation
+        function goToStep(step) {
+            // Hide all
+            ['step1', 'step2', 'step3-processing', 'step3-success', 'step3-failed'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            
+            // Show target
+            if (step === 1) {
+                document.getElementById('step1').classList.remove('hidden');
+                updateIndicators(1);
+            } else if (step === 2) {
+                document.getElementById('step2').classList.remove('hidden');
+                updateIndicators(2);
+            } else if (step === 'processing') {
+                document.getElementById('step3-processing').classList.remove('hidden');
+                updateIndicators(3);
+            } else if (step === 'success') {
+                document.getElementById('step3-success').classList.remove('hidden');
+                updateIndicators(3);
+            } else if (step === 'failed') {
+                document.getElementById('step3-failed').classList.remove('hidden');
+                updateIndicators(2);
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateIndicators(step) {
+            const s1 = document.getElementById('step1-indicator');
+            const s2 = document.getElementById('step2-indicator');
+            const s3 = document.getElementById('step3-indicator');
+            const l1 = document.getElementById('line1');
+            const l2 = document.getElementById('line2');
+            
+            s1.className = step >= 1 ? 'step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm' : 'step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm';
+            s2.className = step >= 2 ? 'step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm' : 'step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm';
+            s3.className = step >= 3 ? 'step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm' : 'step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm';
+            
+            l1.className = step >= 2 ? 'step-line w-8 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded' : 'step-line w-8 h-1 bg-white/20 rounded';
+            l2.className = step >= 3 ? 'step-line w-8 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded' : 'step-line w-8 h-1 bg-white/20 rounded';
+        }
+
+        function goBack() {
+            goToStep(1);
+        }
+
+        // Check for returning user
+        window.onload = function() {
+            const saved = localStorage.getItem('cd_current_payment');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.status === 'paid') {
+                    // They already paid, show success
+                    userData = data;
+                    transactionRef = data.transactionRef;
+                    showSuccess({ transaction_id: data.flutterwaveRef });
+                }
+            }
+        };
+    </script>
+</body>
+</html>
 <body class="antialiased relative min-h-screen flex flex-col">
 
     <!-- Background -->
