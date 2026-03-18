@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Free affiliate marketing training for Coach Destiny members. Learn how to earn daily income online.">
+    <title>Training Center | Coach Destiny Affiliate Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0f172a; color: #ffffff; overflow-x: hidden; touch-action: manipulation; font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cta-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.5); }
+        .cta-primary:active { transform: scale(0.98); }
+        .video-card { position: relative; overflow: hidden; }
+        .video-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 1; }
+        .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; width: 60px; height: 60px; background: rgba(245, 158, 11, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(to right, #f59e0b, #d97706); transition: width 0.3s; }
+        .touch-target { min-height: 48px; min-width: 48px; }
+        .safe-top { padding-top: env(safe-area-inset-top); }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #0f172a 80%, transparent);
+            padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+            z-index: 99;
+        }
+    </style>
+</head>
+<body class="antialiased relative pb-24">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10 safe-top">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">CD</div>
+                    <div>
+                        <span class="font-bold text-base text-white block leading-none">Coach Destiny</span>
+                        <span class="text-blue-400 text-[10px] font-semibold tracking-wider">TRAINING</span>
+                    </div>
+                </a>
+                <a href="index.html" class="touch-target flex items-center justify-center text-gray-300">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4">
+                    <i class="fas fa-graduation-cap"></i>
+                    Members Only
+                </div>
+                <h1 class="text-3xl font-extrabold mb-3">
+                    <span class="text-gradient">Training</span> Center
+                </h1>
+                <p class="text-gray-400 text-sm">Master affiliate marketing and start earning daily</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Overview -->
+    <section class="py-6 bg-white/5 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-semibold">Your Progress</span>
+                <span class="text-amber-400 text-sm font-bold">0/5 Completed</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <p class="text-gray-400 text-xs mt-2">Complete all modules to unlock bonuses!</p>
+        </div>
+    </section>
+
+    <!-- Training Modules -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            
+            <!-- Module 1 -->
+            <div class="glass-card rounded-xl overflow-hidden">
+                <div class="video-card h-48 bg-gray-800 relative">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Module 1" class="w-full h-full object-cover">
+                    <div class="play-btn">
+                        <i class="fas fa-play text-white text-xl ml-1"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 z-10">
+                        <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded">MODULE 1</span>
+                        <h3 class="font-bold text-white mt-2">Getting Started Guide</h3>
+                        <p class="text-gray-300 text-xs">15 mins • Beginner</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-gray-500"></i> Understanding the platform</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-gray-500"></i> Setting up your profile</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check-circle text-gray-500"></i> Getting your affiliate link</li>
+                    </ul>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-white/10 text-white font-semibold text-sm active:bg-white/20 transition-colors">
+                        <i class="fas fa-lock mr-2"></i> Start Learning
+                    </button>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="glass-card rounded-xl overflow-hidden opacity-75">
+                <div class="video-card h-48 bg-gray-800 relative">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Module 2" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                        <i class="fas fa-lock text-white text-3xl"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 z-10">
+                        <span class="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded">MODULE 2</span>
+                        <h3 class="font-bold text-white mt-2">WhatsApp Marketing Mastery</h3>
+                        <p class="text-gray-300 text-xs">25 mins • Intermediate</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Building contact lists</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Crafting winning messages</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Status marketing secrets</li>
+                    </ul>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-gray-700 text-gray-400 font-semibold text-sm cursor-not-allowed">
+                        <i class="fas fa-lock mr-2"></i> Complete Module 1 First
+                    </button>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="glass-card rounded-xl overflow-hidden opacity-75">
+                <div class="video-card h-48 bg-gray-800 relative">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Module 3" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                        <i class="fas fa-lock text-white text-3xl"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 z-10">
+                        <span class="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded">MODULE 3</span>
+                        <h3 class="font-bold text-white mt-2">Facebook & Instagram Ads</h3>
+                        <p class="text-gray-300 text-xs">35 mins • Advanced</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Creating viral content</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Running low-cost ads</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Targeting the right audience</li>
+                    </ul>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-gray-700 text-gray-400 font-semibold text-sm cursor-not-allowed">
+                        <i class="fas fa-lock mr-2"></i> Locked
+                    </button>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="glass-card rounded-xl overflow-hidden opacity-75">
+                <div class="video-card h-48 bg-gray-800 relative">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Module 4" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                        <i class="fas fa-lock text-white text-3xl"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 z-10">
+                        <span class="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded">MODULE 4</span>
+                        <h3 class="font-bold text-white mt-2">Sales Psychology</h3>
+                        <p class="text-gray-300 text-xs">20 mins • Intermediate</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Handling objections</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Closing techniques</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Building trust fast</li>
+                    </ul>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-gray-700 text-gray-400 font-semibold text-sm cursor-not-allowed">
+                        <i class="fas fa-lock mr-2"></i> Locked
+                    </button>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="glass-card rounded-xl overflow-hidden opacity-75">
+                <div class="video-card h-48 bg-gray-800 relative">
+                    <img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Module 5" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+                        <i class="fas fa-lock text-white text-3xl"></i>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 z-10">
+                        <span class="bg-gray-500 text-white text-[10px] font-bold px-2 py-1 rounded">MODULE 5</span>
+                        <h3 class="font-bold text-white mt-2">Scaling to ₦100k/Month</h3>
+                        <p class="text-gray-300 text-xs">30 mins • Expert</p>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Building a team</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Automation tools</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-lock text-gray-600"></i> Advanced strategies</li>
+                    </ul>
+                    <button class="w-full mt-4 py-3 rounded-lg bg-gray-700 text-gray-400 font-semibold text-sm cursor-not-allowed">
+                        <i class="fas fa-lock mr-2"></i> Locked
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="py-8 bg-white/5 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-xl font-bold mb-6 text-center">Downloadable Resources</h2>
+            
+            <div class="space-y-3">
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center text-red-400">
+                            <i class="fas fa-file-pdf text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm">Marketing Blueprint PDF</h4>
+                            <p class="text-gray-400 text-xs">Complete step-by-step guide</p>
+                        </div>
+                    </div>
+                    <button class="touch-target w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">
+                            <i class="fas fa-image text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm">Social Media Templates</h4>
+                            <p class="text-gray-400 text-xs">Ready-to-use designs</p>
+                        </div>
+                    </div>
+                    <button class="touch-target w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                            <i class="fas fa-comment-dots text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm">WhatsApp Scripts</h4>
+                            <p class="text-gray-400 text-xs">Copy-paste messages</p>
+                        </div>
+                    </div>
+                    <button class="touch-target w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-lg font-bold mb-3">Need Help?</h2>
+            <p class="text-gray-400 text-sm mb-4">Join our private WhatsApp group for support</p>
+            <a href="https://wa.me/2349135204957?text=I%20need%20help%20with%20training" target="_blank" class="inline-flex items-center gap-2 bg-[#25D366] px-6 py-3 rounded-full text-white font-semibold active:scale-95 transition-transform">
+                <i class="fab fa-whatsapp"></i>
+                Get Support
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black/60 border-t border-white/10 pt-8 pb-24 safe-bottom">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <div class="w-10 h-10 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">CD</div>
+                <div class="text-left">
+                    <span class="font-bold text-white block">Coach Destiny</span>
+                    <span class="text-blue-400 text-xs">AFFILIATE HUB</span>
+                </div>
+            </div>
+            <p class="text-gray-500 text-xs mt-4">&copy; 2024 Coach Destiny. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta">
+        <a href="index.html" class="block w-full py-4 rounded-xl cta-primary text-white font-bold text-lg text-center shadow-lg active:scale-[0.98] transition-transform">
+            <i class="fas fa-home mr-2"></i> Back to Home
+        </a>
+    </div>
+
+</body>
+</html>
