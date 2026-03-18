@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Top earners leaderboard for Coach Destiny Affiliate Hub. See who's earning the most daily.">
+    <title>Leaderboard | Coach Destiny Affiliate Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background-color: #0f172a; color: #ffffff; overflow-x: hidden; touch-action: manipulation; font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cta-primary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.5); }
+        .cta-primary:active { transform: scale(0.98); }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #B87333); }
+        .touch-target { min-height: 48px; min-width: 48px; }
+        .safe-top { padding-top: env(safe-area-inset-top); }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #0f172a 80%, transparent);
+            padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+            z-index: 99;
+        }
+        .podium-item { position: relative; }
+        .podium-item::after {
+            content: attr(data-rank);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .podium-item[data-rank="1"]::after { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .podium-item[data-rank="2"]::after { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
+        .podium-item[data-rank="3"]::after { background: linear-gradient(135deg, #CD7F32, #B87333); }
+    </style>
+</head>
+<body class="antialiased relative pb-24">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10 safe-top">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">CD</div>
+                    <div>
+                        <span class="font-bold text-base text-white block leading-none">Coach Destiny</span>
+                        <span class="text-blue-400 text-[10px] font-semibold tracking-wider">LEADERBOARD</span>
+                    </div>
+                </a>
+                <a href="index.html" class="touch-target flex items-center justify-center text-gray-300">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4">
+                    <i class="fas fa-trophy"></i>
+                    Top Earners
+                </div>
+                <h1 class="text-3xl font-extrabold mb-3">
+                    <span class="text-gradient">Leader</span>board
+                </h1>
+                <p class="text-gray-400 text-sm">See who's crushing it this month!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="py-6 bg-white/5 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-2xl font-bold text-amber-400">₦2.5M</p>
+                    <p class="text-gray-400 text-xs">Total Paid Out</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-green-400">5,000+</p>
+                    <p class="text-gray-400 text-xs">Active Affiliates</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-blue-400">₦50k</p>
+                    <p class="text-gray-400 text-xs">Top Daily</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Podium (Top 3) -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-center text-lg font-bold mb-6">This Week's Champions</h2>
+            
+            <div class="flex items-end justify-center gap-4 mb-8">
+                <!-- 2nd Place -->
+                <div class="podium-item flex flex-col items-center" data-rank="2">
+                    <div class="w-20 h-20 rounded-full bg-gray-700 border-4 border-gray-400 overflow-hidden mb-2">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="2nd" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-bold text-sm">David O.</p>
+                    <p class="text-amber-400 font-bold text-lg">₦185,000</p>
+                    <p class="text-gray-400 text-xs">Lagos</p>
+                </div>
+
+                <!-- 1st Place -->
+                <div class="podium-item flex flex-col items-center -mt-8" data-rank="1">
+                    <div class="w-24 h-24 rounded-full bg-gray-700 border-4 border-amber-400 overflow-hidden mb-2 shadow-lg shadow-amber-400/30">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="1st" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-bold text-base">Chioma A.</p>
+                    <p class="text-amber-400 font-bold text-xl">₦450,000</p>
+                    <p class="text-gray-400 text-xs">Abuja</p>
+                    <div class="mt-2 px-3 py-1 bg-amber-500/20 rounded-full text-amber-400 text-xs font-bold">
+                        <i class="fas fa-crown mr-1"></i> Champion
+                    </div>
+                </div>
+
+                <!-- 3rd Place -->
+                <div class="podium-item flex flex-col items-center" data-rank="3">
+                    <div class="w-20 h-20 rounded-full bg-gray-700 border-4 border-orange-700 overflow-hidden mb-2">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="3rd" class="w-full h-full object-cover">
+                    </div>
+                    <p class="font-bold text-sm">Emmanuel K.</p>
+                    <p class="text-amber-400 font-bold text-lg">₦142,000</p>
+                    <p class="text-gray-400 text-xs">Port Harcourt</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Tabs -->
+    <section class="py-4 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                <button class="px-4 py-2 rounded-full bg-amber-500 text-white font-semibold text-sm whitespace-nowrap active:scale-95 transition-transform">
+                    This Week
+                </button>
+                <button class="px-4 py-2 rounded-full bg-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap active:scale-95 transition-transform">
+                    This Month
+                </button>
+                <button class="px-4 py-2 rounded-full bg-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap active:scale-95 transition-transform">
+                    All Time
+                </button>
+                <button class="px-4 py-2 rounded-full bg-white/10 text-gray-300 font-semibold text-sm whitespace-nowrap active:scale-95 transition-transform">
+                    Newbies
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard List -->
+    <section class="py-4">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            
+            <!-- Rank 4 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">4</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Blessing O.</h4>
+                        <span class="text-green-400 font-bold">₦125,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Enugu</span>
+                        <span class="text-amber-400">🔥 12 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 5 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">5</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">John D.</h4>
+                        <span class="text-green-400 font-bold">₦98,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Lagos</span>
+                        <span class="text-amber-400">🔥 8 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 6 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">6</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Grace M.</h4>
+                        <span class="text-green-400 font-bold">₦87,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Ibadan</span>
+                        <span class="text-amber-400">🔥 7 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 7 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">7</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Michael B.</h4>
+                        <span class="text-green-400 font-bold">₦76,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Kano</span>
+                        <span class="text-amber-400">🔥 6 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 8 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">8</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Sarah K.</h4>
+                        <span class="text-green-400 font-bold">₦65,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Abuja</span>
+                        <span class="text-amber-400">🔥 5 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 9 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">9</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/men/56.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Peter A.</h4>
+                        <span class="text-green-400 font-bold">₦54,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Lagos</span>
+                        <span class="text-amber-400">🔥 4 sales</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rank 10 -->
+            <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">10</div>
+                <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
+                    <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="User" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-bold text-sm">Faith J.</h4>
+                        <span class="text-green-400 font-bold">₦43,000</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-gray-400">
+                        <span><i class="fas fa-map-marker-alt mr-1"></i>Port Harcourt</span>
+                        <span class="text-amber-400">🔥 3 sales</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Your Rank Preview -->
+    <section class="py-8 bg-white/5 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="glass-card rounded-xl p-4 border-2 border-amber-500/30">
+                <div class="flex items-center gap-4">
+                    <div class="text-center">
+                        <p class="text-gray-400 text-xs">Your Rank</p>
+                        <p class="text-3xl font-bold text-amber-400">#247</p>
+                    </div>
+                    <div class="h-12 w-px bg-white/20"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold mb-1">Keep pushing! You're doing great!</p>
+                        <p class="text-gray-400 text-xs">Earn ₦7,000 more to enter top 200</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-green-400 font-bold">₦12,500</p>
+                        <p class="text-gray-400 text-xs">Your earnings</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motivation -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="glass-card rounded-xl p-6">
+                <i class="fas fa-quote-left text-3xl text-amber-400 mb-4"></i>
+                <p class="text-lg font-semibold mb-4">"If they can do it, so can you!"</p>
+                <p class="text-gray-400 text-sm mb-6">Every top earner started exactly where you are now. The difference? They took consistent action.</p>
+                <a href="training.html" class="inline-flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                    <i class="fas fa-graduation-cap"></i>
+                    Learn Their Strategies
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black/60 border-t border-white/10 pt-8 pb-24 safe-bottom">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <div class="w-10 h-10 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">CD</div>
+                <div class="text-left">
+                    <span class="font-bold text-white block">Coach Destiny</span>
+                    <span class="text-blue-400 text-xs">AFFILIATE HUB</span>
+                </div>
+            </div>
+            <p class="text-gray-500 text-xs mt-4">&copy; 2024 Coach Destiny. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Sticky CTA -->
+    <div class="sticky-cta">
+        <a href="index.html" class="block w-full py-4 rounded-xl cta-primary text-white font-bold text-lg text-center shadow-lg active:scale-[0.98] transition-transform">
+            <i class="fas fa-rocket mr-2"></i> Start Earning Now
+        </a>
+    </div>
+
+</body>
+</html>
