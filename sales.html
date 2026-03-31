@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* Header Section */
         .header {
             text-align: center;
             padding: 40px 20px;
@@ -96,7 +95,6 @@
             box-shadow: 0 6px 20px rgba(0, 208, 132, 0.6);
         }
 
-        /* Stats Section */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -130,7 +128,6 @@
             opacity: 0.8;
         }
 
-        /* Products Grid */
         .products-section {
             margin-bottom: 40px;
         }
@@ -170,10 +167,9 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .product-image {
+        .product-image-container {
             width: 100%;
             height: 200px;
-            object-fit: cover;
             background: linear-gradient(135deg, #1a3a4a 0%, #2c5364 100%);
             display: flex;
             align-items: center;
@@ -184,6 +180,18 @@
             text-align: center;
             padding: 20px;
             border-bottom: 2px solid rgba(0, 208, 132, 0.3);
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .product-image-container img.loaded {
+            display: block;
         }
 
         .product-content {
@@ -250,12 +258,6 @@
             box-shadow: 0 6px 20px rgba(0, 208, 132, 0.6);
         }
 
-        .buy-btn::before {
-            content: "💬";
-            font-size: 1.3rem;
-        }
-
-        /* Protected Notice */
         .protected-notice {
             background: rgba(0, 208, 132, 0.1);
             border: 1px solid rgba(0, 208, 132, 0.3);
@@ -266,7 +268,6 @@
             color: #00d084;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 40px 20px;
@@ -325,7 +326,6 @@
     <button class="logout-btn" onclick="logout()">🚪 Logout</button>
     
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <div class="security-badges">
                 <span class="badge">256-bit SSL Secured</span>
@@ -336,7 +336,6 @@
             <p>Welcome to your members-only resource library. Premium knowledge products at unbeatable prices. Handpicked by Coach Destiny for serious entrepreneurs.</p>
         </div>
 
-        <!-- Stats -->
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-number">20+</div>
@@ -356,22 +355,19 @@
             </div>
         </div>
 
-        <!-- Protected Notice -->
         <div class="protected-notice">
             🔒 This page is exclusively for registered members of Coach Destiny Affiliate Hub. Share your access link at your own risk.
         </div>
 
-        <!-- Products Section -->
         <div class="products-section">
             <h2 class="section-title">Available Products</h2>
             <p class="section-subtitle">Click any product to purchase via WhatsApp</p>
 
             <div class="products-grid" id="productsGrid">
-                <!-- Products will be inserted here -->
+                <!-- Products will be inserted here by JavaScript -->
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <h3>Need Help?</h3>
             <p>Contact Coach Destiny directly on WhatsApp for support</p>
@@ -385,189 +381,75 @@
             window.location.href = 'Signup.html';
         }
 
-        const products = [
-            {
-                id: 1,
-                title: "PSB (Public Special Blueprint)",
-                price: 0.50,
-                description: "Unlock the secrets to building a powerful public presence. This blueprint reveals proven strategies to establish authority, gain massive visibility, and create influence in any niche.",
-                imageName: "psb-public-special-blueprint.jpg"
-            },
-            {
-                id: 2,
-                title: "Social Media Marketing",
-                price: 1.30,
-                description: "Master the art of viral marketing across all platforms. Learn how to create engaging content, grow your followers organically, and convert likes into loyal customers.",
-                imageName: "social-media-marketing.jpg"
-            },
-            {
-                id: 3,
-                title: "Graphics Design Basic",
-                price: 1.50,
-                description: "From zero to design hero! Learn the fundamentals of creating stunning visuals that capture attention. Perfect for beginners who want to create professional graphics.",
-                imageName: "graphics-design-basic.jpg"
-            },
-            {
-                id: 4,
-                title: "The Personal Brand Blueprint",
-                price: 1.50,
-                description: "Your comprehensive guide to building a magnetic personal brand that attracts opportunities, clients, and revenue. Position yourself as the go-to expert.",
-                imageName: "personal-brand-blueprint.jpg"
-            },
-            {
-                id: 5,
-                title: "EGT Affiliate Marketing",
-                price: 10.50,
-                description: "The ultimate affiliate marketing mastery course. Learn high-ticket strategies, traffic generation secrets, and conversion optimization techniques for 6-figure incomes.",
-                imageName: "egt-affiliate-marketing.jpg"
-            },
-            {
-                id: 6,
-                title: "How to Start a Mini Important Business",
-                price: 2.00,
-                description: "Start small, think big! Launch a profitable mini-business with minimal capital. Perfect for side hustlers and aspiring entrepreneurs.",
-                imageName: "mini-important-business.jpg"
-            },
-            {
-                id: 7,
-                title: "Dropshipping Guide",
-                price: 2.70,
-                description: "Build a thriving e-commerce empire without holding inventory. Master product research, supplier relations, and scaling strategies.",
-                imageName: "dropshipping-guide.jpg"
-            },
-            {
-                id: 8,
-                title: "Beginner Guide to Video Editing",
-                price: 2.00,
-                description: "Transform raw footage into cinematic masterpieces. Learn professional editing techniques, color grading, and storytelling.",
-                imageName: "video-editing-beginner.jpg"
-            },
-            {
-                id: 9,
-                title: "Confident Booster",
-                price: 1.00,
-                description: "Unleash your inner powerhouse! Overcome self-doubt, develop unshakeable confidence, and present yourself with authority.",
-                imageName: "confident-booster.jpg"
-            },
-            {
-                id: 10,
-                title: "Simplified Forex Trading",
-                price: 2.70,
-                description: "Demystify the forex market. Learn technical analysis, risk management, and proven trading strategies without confusing jargon.",
-                imageName: "simplified-forex-trading.jpg"
-            },
-            {
-                id: 11,
-                title: "A Complete Guide to Lead Generation",
-                price: 1.00,
-                description: "Never run out of customers again! Master organic and paid strategies to fill your pipeline with ready-to-buy prospects.",
-                imageName: "lead-generation-guide.jpg"
-            },
-            {
-                id: 12,
-                title: "Amazon KDP Basics",
-                price: 2.00,
-                description: "Publish books and generate passive income on Amazon. Learn niche research, book creation, and marketing strategies.",
-                imageName: "amazon-kdp-basics.jpg"
-            },
-            {
-                id: 13,
-                title: "Monthly Content Calendar",
-                price: 0.50,
-                description: "Never stare at a blank screen again! Get 365 days of content ideas and posting schedules. Done-for-you calendar.",
-                imageName: "monthly-content-calendar.jpg"
-            },
-            {
-                id: 14,
-                title: "DMC 101",
-                price: 30.00,
-                description: "Premium digital marketing certification. Master SEO, paid advertising, email marketing, analytics, and conversion optimization.",
-                imageName: "dmc-101.jpg"
-            },
-            {
-                id: 15,
-                title: "AI Odyssey: Hyper Realism Unlocked",
-                price: 3.50,
-                description: "Harness AI to create hyper-realistic content and art. Learn cutting-edge AI tools that put you ahead of 99% of creators.",
-                imageName: "ai-odyssey-hyper-realism.jpg"
-            },
-            {
-                id: 16,
-                title: "Cyber Friend",
-                price: 7.70,
-                description: "Navigate the digital world safely. Learn cybersecurity basics and how to leverage online connections for business growth.",
-                imageName: "cyber-friend.jpg"
-            },
-            {
-                id: 17,
-                title: "Crypto Trading for Beginners",
-                price: 3.00,
-                description: "Your safe entry into cryptocurrency. Understand blockchain, wallet security, and smart trading strategies.",
-                imageName: "crypto-trading-beginners.jpg"
-            },
-            {
-                id: 18,
-                title: "Website Building from Scratch",
-                price: 3.00,
-                description: "Create stunning, professional websites without coding. Learn modern design principles and UX optimization.",
-                imageName: "website-building-scratch.jpg"
-            },
-            {
-                id: 19,
-                title: "YouTube Monetization Guide",
-                price: 3.00,
-                description: "Turn your YouTube channel into a money-making machine. Learn content strategies and multiple revenue streams.",
-                imageName: "youtube-monetization-guide.jpg"
-            },
-            {
-                id: 20,
-                title: "Ultimate PayPal Account Guide",
-                price: 2.00,
-                description: "Master PayPal for business. Learn account setup, security, dispute resolution, and international transactions.",
-                imageName: "ultimate-paypal-guide.jpg"
-            }
+        // Product data
+        var products = [
+            { id: 1, title: "PSB (Public Special Blueprint)", price: 0.50, description: "Unlock the secrets to building a powerful public presence. This blueprint reveals proven strategies to establish authority, gain massive visibility, and create influence in any niche.", imageName: "psb-public-special-blueprint.jpg" },
+            { id: 2, title: "Social Media Marketing", price: 1.30, description: "Master the art of viral marketing across all platforms. Learn how to create engaging content, grow your followers organically, and convert likes into loyal customers.", imageName: "social-media-marketing.jpg" },
+            { id: 3, title: "Graphics Design Basic", price: 1.50, description: "From zero to design hero! Learn the fundamentals of creating stunning visuals that capture attention. Perfect for beginners who want to create professional graphics.", imageName: "graphics-design-basic.jpg" },
+            { id: 4, title: "The Personal Brand Blueprint", price: 1.50, description: "Your comprehensive guide to building a magnetic personal brand that attracts opportunities, clients, and revenue. Position yourself as the go-to expert.", imageName: "personal-brand-blueprint.jpg" },
+            { id: 5, title: "EGT Affiliate Marketing", price: 10.50, description: "The ultimate affiliate marketing mastery course. Learn high-ticket strategies, traffic generation secrets, and conversion optimization techniques for 6-figure incomes.", imageName: "egt-affiliate-marketing.jpg" },
+            { id: 6, title: "How to Start a Mini Important Business", price: 2.00, description: "Start small, think big! Launch a profitable mini-business with minimal capital. Perfect for side hustlers and aspiring entrepreneurs.", imageName: "mini-important-business.jpg" },
+            { id: 7, title: "Dropshipping Guide", price: 2.70, description: "Build a thriving e-commerce empire without holding inventory. Master product research, supplier relations, and scaling strategies.", imageName: "dropshipping-guide.jpg" },
+            { id: 8, title: "Beginner Guide to Video Editing", price: 2.00, description: "Transform raw footage into cinematic masterpieces. Learn professional editing techniques, color grading, and storytelling.", imageName: "video-editing-beginner.jpg" },
+            { id: 9, title: "Confident Booster", price: 1.00, description: "Unleash your inner powerhouse! Overcome self-doubt, develop unshakeable confidence, and present yourself with authority.", imageName: "confident-booster.jpg" },
+            { id: 10, title: "Simplified Forex Trading", price: 2.70, description: "Demystify the forex market. Learn technical analysis, risk management, and proven trading strategies without confusing jargon.", imageName: "simplified-forex-trading.jpg" },
+            { id: 11, title: "A Complete Guide to Lead Generation", price: 1.00, description: "Never run out of customers again! Master organic and paid strategies to fill your pipeline with ready-to-buy prospects.", imageName: "lead-generation-guide.jpg" },
+            { id: 12, title: "Amazon KDP Basics", price: 2.00, description: "Publish books and generate passive income on Amazon. Learn niche research, book creation, and marketing strategies.", imageName: "amazon-kdp-basics.jpg" },
+            { id: 13, title: "Monthly Content Calendar", price: 0.50, description: "Never stare at a blank screen again! Get 365 days of content ideas and posting schedules. Done-for-you calendar.", imageName: "monthly-content-calendar.jpg" },
+            { id: 14, title: "DMC 101", price: 30.00, description: "Premium digital marketing certification. Master SEO, paid advertising, email marketing, analytics, and conversion optimization.", imageName: "dmc-101.jpg" },
+            { id: 15, title: "AI Odyssey: Hyper Realism Unlocked", price: 3.50, description: "Harness AI to create hyper-realistic content and art. Learn cutting-edge AI tools that put you ahead of 99% of creators.", imageName: "ai-odyssey-hyper-realism.jpg" },
+            { id: 16, title: "Cyber Friend", price: 7.70, description: "Navigate the digital world safely. Learn cybersecurity basics and how to leverage online connections for business growth.", imageName: "cyber-friend.jpg" },
+            { id: 17, title: "Crypto Trading for Beginners", price: 3.00, description: "Your safe entry into cryptocurrency. Understand blockchain, wallet security, and smart trading strategies.", imageName: "crypto-trading-beginners.jpg" },
+            { id: 18, title: "Website Building from Scratch", price: 3.00, description: "Create stunning, professional websites without coding. Learn modern design principles and UX optimization.", imageName: "website-building-scratch.jpg" },
+            { id: 19, title: "YouTube Monetization Guide", price: 3.00, description: "Turn your YouTube channel into a money-making machine. Learn content strategies and multiple revenue streams.", imageName: "youtube-monetization-guide.jpg" },
+            { id: 20, title: "Ultimate PayPal Account Guide", price: 2.00, description: "Master PayPal for business. Learn account setup, security, dispute resolution, and international transactions.", imageName: "ultimate-paypal-guide.jpg" }
         ];
 
+        // Generate WhatsApp link
         function generateWhatsAppLink(product) {
-            const phone = "2347089555755";
-            const message = `Hi Coach Destiny! I'm interested in purchasing "${product.title}" for $${product.price.toFixed(2)}. Please send me payment details.`;
-            return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            var phone = "2347089555755";
+            var message = "Hi Coach Destiny! I'm interested in purchasing \"" + product.title + "\" for $" + product.price.toFixed(2) + ". Please send me payment details.";
+            return "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
         }
 
+        // Render products
         function renderProducts() {
-            const grid = document.getElementById('productsGrid');
+            var grid = document.getElementById('productsGrid');
             
-            products.forEach(product => {
-                const card = document.createElement('div');
+            for (var i = 0; i < products.length; i++) {
+                var product = products[i];
+                var card = document.createElement('div');
                 card.className = 'product-card';
                 
-                // UPDATED: Image path without "images/" folder
-                card.innerHTML = `
-                    <img src="${product.imageName}" alt="${product.title}" class="product-image" onerror="this.style.display='none'; this.parentElement.insertBefore(document.createElement('div'), this); this.previousElementSibling.className='product-image'; this.previousElementSibling.textContent='📷 ${product.imageName}';">
-                    <div class="product-content">
-                        <h3 class="product-title">${product.title}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="price-tag">
-                            <span class="price-label">Investment</span>
-                            <span class="price-amount">$${product.price.toFixed(2)}</span>
-                        </div>
-                        <a href="${generateWhatsAppLink(product)}" target="_blank" class="buy-btn">
-                            Buy via WhatsApp
-                        </a>
-                    </div>
-                `;
+                var imgId = 'img-' + product.id;
+                
+                card.innerHTML = 
+                    '<div class="product-image-container" id="container-' + product.id + '">' +
+                        '<img id="' + imgId + '" src="' + product.imageName + '" alt="' + product.title + '" onload="this.classList.add(\'loaded\'); this.style.display=\'block\'; this.previousElementSibling.style.display=\'none\';" onerror="this.style.display=\'none\'">' +
+                        '<span id="placeholder-' + product.id + '">📷 ' + product.imageName + '</span>' +
+                    '</div>' +
+                    '<div class="product-content">' +
+                        '<h3 class="product-title">' + product.title + '</h3>' +
+                        '<p class="product-description">' + product.description + '</p>' +
+                        '<div class="price-tag">' +
+                            '<span class="price-label">Investment</span>' +
+                            '<span class="price-amount">$' + product.price.toFixed(2) + '</span>' +
+                        '</div>' +
+                        '<a href="' + generateWhatsAppLink(product) + '" target="_blank" class="buy-btn">💬 Buy via WhatsApp</a>' +
+                    '</div>';
                 
                 grid.appendChild(card);
-            });
+            }
         }
 
+        // Logout function
         function logout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('currentUser');
             window.location.href = 'Signup.html';
         }
 
-        // Render products on page load
+        // Render products when page loads
         renderProducts();
     </script>
 </body>
