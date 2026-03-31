@@ -56,7 +56,7 @@
 </head>
 <body class="antialiased relative min-h-screen flex flex-col">
 
-    <!-- CHECK IF ALREADY LOGGED IN - ADDED -->
+    <!-- CHECK IF ALREADY LOGGED IN -->
     <script>
         // If user is already logged in, redirect to sales page
         if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -98,24 +98,10 @@
         </div>
     </header>
 
-    <!-- Progress Steps -->
-    <div class="max-w-md mx-auto px-4 py-6 w-full">
-        <div class="flex items-center justify-center mb-6">
-            <div class="flex items-center gap-2">
-                <div class="step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step1-indicator">1</div>
-                <div class="step-line w-8 h-1 bg-white/20 rounded" id="line1"></div>
-                <div class="step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step2-indicator">2</div>
-                <div class="step-line w-8 h-1 bg-white/20 rounded" id="line2"></div>
-                <div class="step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm" id="step3-indicator">3</div>
-            </div>
-        </div>
-        <div class="flex justify-between text-xs text-gray-400 px-2 mb-6">
-            <span>Your Info</span>
-            <span>Payment</span>
-            <span>Success</span>
-        </div>
-
-        <!-- STEP 1: Personal Details -->
+    <!-- Main Content - ONLY STEP 1: Registration Form -->
+    <div class="max-w-md mx-auto px-4 py-6 w-full flex-grow">
+        
+        <!-- Registration Form -->
         <div id="step1" class="glass-card rounded-2xl p-6 fade-in">
             <div class="flex items-center justify-center gap-2 mb-4 flex-wrap">
                 <div class="trust-badge px-3 py-1.5 rounded-lg flex items-center gap-1.5">
@@ -133,7 +119,7 @@
             </div>
 
             <h2 class="text-2xl font-bold text-white mb-1 text-center">Create Account</h2>
-            <p class="text-gray-400 text-sm mb-5 text-center">Join 5,000+ affiliates earning daily</p>
+            <p class="text-gray-400 text-sm mb-5 text-center">Join 5,000+ affiliates earning daily. Get instant access to 20+ premium products!</p>
 
             <form id="signupForm" class="space-y-4">
                 <div class="grid grid-cols-2 gap-3">
@@ -173,12 +159,12 @@
                 <div class="flex items-start gap-2 pt-1">
                     <input type="checkbox" required id="agree" class="mt-0.5 w-4 h-4 rounded border-gray-600 text-green-500 focus:ring-green-500 bg-white/10">
                     <label for="agree" class="text-xs text-gray-400 leading-relaxed">
-                        I agree to pay ₦10,450 registration fee and accept the <a href="#" onclick="openModal('terms')" class="text-blue-400 underline hover:text-blue-300">Terms of Service</a> & <a href="#" onclick="openModal('privacy')" class="text-blue-400 underline hover:text-blue-300">Privacy Policy</a> *
+                        I agree to the <a href="#" onclick="openModal('terms')" class="text-blue-400 underline hover:text-blue-300">Terms of Service</a> & <a href="#" onclick="openModal('privacy')" class="text-blue-400 underline hover:text-blue-300">Privacy Policy</a>. I understand I can purchase products after registration. *
                     </label>
                 </div>
 
                 <button type="submit" class="cta-primary w-full py-3.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 transition-all mt-2">
-                    Continue to Payment <i class="fas fa-arrow-right"></i>
+                    <i class="fas fa-shopping-bag"></i> View Products <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
 
@@ -190,111 +176,6 @@
             </div>
         </div>
 
-        <!-- STEP 2: Payment -->
-        <div id="step2" class="glass-card rounded-2xl p-6 hidden fade-in">
-            <div class="flex items-center justify-center mb-4">
-                <div class="ssl-badge w-16 h-16 rounded-full flex items-center justify-center pulse-green">
-                    <i class="fab fa-whatsapp text-3xl text-white"></i>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-bold text-white mb-1 text-center">Complete Payment</h2>
-            <p class="text-gray-400 text-sm mb-5 text-center">Secure payment via WhatsApp</p>
-
-            <div class="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-4 mb-5">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-300 text-sm">Registration Fee</span>
-                    <span class="text-white font-bold">₦10,450.00</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-white font-medium">Total Amount</span>
-                    <span class="text-green-400 text-2xl font-bold">₦10,450</span>
-                </div>
-            </div>
-
-            <div class="bg-white/5 rounded-xl p-4 mb-5 border border-white/10">
-                <h3 class="text-white font-bold mb-3 flex items-center gap-2">
-                    <i class="fas fa-shield-alt text-green-400"></i> Secure Payment Steps
-                </h3>
-                <div class="space-y-3 text-sm text-gray-300">
-                    <div class="flex items-start gap-3">
-                        <span class="bg-green-500/20 text-green-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
-                        <p>Click button to open WhatsApp</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="bg-green-500/20 text-green-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
-                        <p>Send pre-filled message with your details</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="bg-green-500/20 text-green-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
-                        <p>Receive payment details (OPay: <strong class="text-white">7089555755</strong>)</p>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <span class="bg-green-500/20 text-green-400 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">4</span>
-                        <p>Complete payment & send receipt</p>
-                    </div>
-                </div>
-            </div>
-
-            <a id="whatsappPayBtn" href="#" target="_blank" class="whatsapp-btn w-full py-4 rounded-xl text-white font-bold flex items-center justify-center gap-2 transition-all mb-3 pulse-green">
-                <i class="fas fa-lock mr-1"></i> Pay Securely via WhatsApp <i class="fab fa-whatsapp text-xl"></i>
-            </a>
-
-            <div class="flex items-center justify-center gap-3 text-xs text-gray-400 mb-4 flex-wrap">
-                <span class="flex items-center gap-1"><i class="fas fa-check text-green-400"></i> End-to-End Encrypted</span>
-                <span class="flex items-center gap-1"><i class="fas fa-check text-green-400"></i> Verified Admin</span>
-                <span class="flex items-center gap-1"><i class="fas fa-check text-green-400"></i> Instant Response</span>
-            </div>
-
-            <button onclick="goBack()" class="w-full py-3 rounded-xl border border-white/20 text-white text-sm font-medium hover:bg-white/5 transition-all">
-                <i class="fas fa-arrow-left mr-1"></i> Go Back
-            </button>
-        </div>
-
-        <!-- STEP 3: Pending - UPDATED WITH LOGIN SYSTEM -->
-        <div id="step3" class="glass-card rounded-2xl p-6 hidden text-center fade-in">
-            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 pulse-green">
-                <i class="fab fa-whatsapp text-4xl text-green-400"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-white mb-2">Request Sent!</h2>
-            <p class="text-gray-400 text-sm mb-5">Check your WhatsApp for secure payment details</p>
-
-            <div class="bg-white/5 rounded-xl p-4 mb-5 text-left">
-                <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/10">
-                    <span class="text-gray-400 text-sm">Amount to Pay</span>
-                    <span class="text-green-400 font-bold">₦10,450</span>
-                </div>
-                <div class="flex justify-between items-center mb-3 pb-3 border-b border-white/10">
-                    <span class="text-gray-400 text-sm">Security Status</span>
-                    <span class="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                        <i class="fas fa-lock text-[10px]"></i> ENCRYPTED
-                    </span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-400 text-sm">WhatsApp Admin</span>
-                    <span class="text-green-400 font-bold text-sm">Verified</span>
-                </div>
-            </div>
-
-            <!-- ADDED: Access Products Button (shows after payment) -->
-            <div id="accessProductsSection" class="hidden mb-4">
-                <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4 mb-4">
-                    <p class="text-green-400 text-sm mb-2"><i class="fas fa-check-circle"></i> Payment Verified!</p>
-                    <p class="text-white text-xs">You now have access to all digital products</p>
-                </div>
-                <button onclick="grantAccess()" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 py-3 rounded-xl text-white font-bold transition-all mb-3">
-                    <i class="fas fa-shopping-bag mr-1"></i> Access Products
-                </button>
-            </div>
-
-            <a href="https://wa.me/2347089555755" target="_blank" class="block w-full bg-[#25D366] hover:bg-[#128C7E] py-3 rounded-xl text-white font-bold text-center transition-all mb-3">
-                <i class="fab fa-whatsapp mr-1"></i> Open WhatsApp Again
-            </a>
-
-            <button onclick="checkStatus()" class="w-full py-3 rounded-xl border border-white/20 text-white text-sm font-medium hover:bg-white/5 transition-all">
-                <i class="fas fa-sync-alt mr-1"></i> Check Status
-            </button>
-        </div>
     </div>
 
     <!-- Footer -->
@@ -347,7 +228,6 @@
 
     <script>
         const WHATSAPP_NUMBER = '2347089555755';
-        const AMOUNT = 10450;
         let userData = {};
 
         const modalData = {
@@ -365,7 +245,7 @@
             },
             terms: {
                 title: 'Terms of Service',
-                content: '<p>By using this website and registering as an affiliate, you agree to the following terms and conditions:</p><h4 class="text-white font-bold mt-4 mb-2">1. Registration Fee:</h4><p class="text-gray-300">A one-time registration fee of ₦10,450 is required for lifetime access to the affiliate program. This fee is non-refundable.</p><h4 class="text-white font-bold mt-4 mb-2">2. Affiliate Responsibilities:</h4><ul class="list-disc list-inside space-y-1 text-gray-300"><li>Promote products ethically and honestly</li><li>Do not engage in spam or misleading marketing</li><li>Maintain accurate account information</li><li>Comply with all applicable laws</li></ul><h4 class="text-white font-bold mt-4 mb-2">3. Commissions & Payments:</h4><ul class="list-disc list-inside space-y-1 text-gray-300"><li>Commissions are earned on successful referrals</li><li>Minimum withdrawal amount applies</li><li>Payments processed weekly</li><li>Accurate bank details required for payouts</li></ul><h4 class="text-white font-bold mt-4 mb-2">4. Termination:</h4><p class="text-gray-300">We reserve the right to terminate accounts for violation of terms, fraudulent activity, or inactive status exceeding 12 months.</p><div class="info-card mt-4 border-l-4 border-orange-500"><p class="text-white font-bold mb-1">Agreement</p><p>By checking the agreement box during registration, you confirm that you have read, understood, and agree to these terms.</p></div><p class="text-xs text-gray-500 mt-4">Last updated: 2024</p>'
+                content: '<p>By using this website and registering as an affiliate, you agree to the following terms and conditions:</p><h4 class="text-white font-bold mt-4 mb-2">1. Registration:</h4><p class="text-gray-300">Registration is free. You only pay when you purchase products. No upfront fees required.</p><h4 class="text-white font-bold mt-4 mb-2">2. Affiliate Responsibilities:</h4><ul class="list-disc list-inside space-y-1 text-gray-300"><li>Promote products ethically and honestly</li><li>Do not engage in spam or misleading marketing</li><li>Maintain accurate account information</li><li>Comply with all applicable laws</li></ul><h4 class="text-white font-bold mt-4 mb-2">3. Product Purchases:</h4><ul class="list-disc list-inside space-y-1 text-gray-300"><li>Products are paid for individually via WhatsApp</li><li>Payment must be confirmed before product delivery</li><li>All sales are final once product is delivered</li></ul><h4 class="text-white font-bold mt-4 mb-2">4. Termination:</h4><p class="text-gray-300">We reserve the right to terminate accounts for violation of terms, fraudulent activity, or inactive status exceeding 12 months.</p><div class="info-card mt-4 border-l-4 border-orange-500"><p class="text-white font-bold mb-1">Agreement</p><p>By checking the agreement box during registration, you confirm that you have read, understood, and agree to these terms.</p></div><p class="text-xs text-gray-500 mt-4">Last updated: 2024</p>'
             }
         };
 
@@ -386,6 +266,7 @@
             if (e.key === 'Escape') closeModal();
         });
 
+        // UPDATED: Form submission now redirects directly to sales page
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -396,75 +277,19 @@
                 email: form.get('email'),
                 phone: form.get('phone'),
                 state: form.get('state'),
-                id: 'CD' + Date.now()
+                id: 'CD' + Date.now(),
+                registeredAt: new Date().toISOString()
             };
             
-            const message = `*NEW AFFILIATE REGISTRATION - SECURE*%0A%0A` +
-                `*Name:* ${userData.firstname} ${userData.lastname}%0A` +
-                `*Email:* ${userData.email}%0A` +
-                `*Phone:* ${userData.phone}%0A` +
-                `*State:* ${userData.state}%0A` +
-                `*ID:* ${userData.id}%0A%0A` +
-                `*I want to pay ₦${AMOUNT.toLocaleString()} securely. Please send payment details.*`;
+            // Store user data
+            localStorage.setItem('userData', JSON.stringify(userData));
             
-            document.getElementById('whatsappPayBtn').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-            localStorage.setItem('pendingRegistration', JSON.stringify(userData));
-            
-            goToStep(2);
-        });
-
-        function goToStep(step) {
-            ['step1', 'step2', 'step3'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            
-            const stepMap = { 1: 'step1', 2: 'step2', 3: 'step3' };
-            if (stepMap[step]) document.getElementById(stepMap[step]).classList.remove('hidden');
-            
-            const activeClass = 'step-indicator step-active w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm';
-            const inactiveClass = 'step-indicator step-inactive w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm';
-            const activeLine = 'step-line w-8 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded';
-            const inactiveLine = 'step-line w-8 h-1 bg-white/20 rounded';
-            
-            document.getElementById('step1-indicator').className = step >= 1 ? activeClass : inactiveClass;
-            document.getElementById('step2-indicator').className = step >= 2 ? activeClass : inactiveClass;
-            document.getElementById('step3-indicator').className = step >= 3 ? activeClass : inactiveClass;
-            document.getElementById('line1').className = step >= 2 ? activeLine : inactiveLine;
-            document.getElementById('line2').className = step >= 3 ? activeLine : inactiveLine;
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function goBack() { goToStep(1); }
-
-        // UPDATED: Check status now shows access button for demo purposes
-        function checkStatus() { 
-            // For demo: show the access products button after checking status
-            // In production, you would verify payment with your backend
-            document.getElementById('accessProductsSection').classList.remove('hidden');
-        }
-
-        // ADDED: Grant access to sales page
-        function grantAccess() {
-            // Store login status
+            // Set login status
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', JSON.stringify(userData));
             
-            // Redirect to sales page
+            // Redirect to sales page immediately
             window.location.href = 'sales.html';
-        }
-
-        window.onload = function() {
-            if (localStorage.getItem('whatsappClicked') === 'true') {
-                goToStep(3);
-                // Show access button if they return after clicking WhatsApp
-                setTimeout(() => {
-                    document.getElementById('accessProductsSection').classList.remove('hidden');
-                }, 2000);
-            }
-        };
-
-        document.getElementById('whatsappPayBtn').addEventListener('click', function() {
-            localStorage.setItem('whatsappClicked', 'true');
-            setTimeout(() => goToStep(3), 1000);
         });
     </script>
 </body>
